@@ -4,6 +4,7 @@ import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 
 import ceu from "./assets/ceu.png";
 import toca from "./assets/toca.png";
+import fundo2 from "./assets/fundo2.gif";
 import flor from "./assets/flor.png";
 import arvore from "./assets/arvore.png";
 import escada from "./assets/escada.svg";
@@ -216,14 +217,14 @@ function MyComponent() {
           <animated.img src={gaiola} style={{ width: "200px", position: "absolute", left: "0px", ...mirrorAnimation }} />
         </ParallaxLayer>
 
-        {/* Espelho */}
-        <ParallaxLayer sticky={{ start: 3.3, end: 3.3 }}>
-          <animated.img src={espelho} style={{ width: "600px", position: "absolute", left: "-140px", ...mirrorAnimation }} />
+        {/* Relógio */}
+        <ParallaxLayer sticky={{ start: 2.8, end: 2.9 }}>
+          <animated.img src={relogio} style={{ width: "300px", position: "absolute", right: "-80px", ...mirrorAnimation }} />
         </ParallaxLayer>
 
-        {/* Relógio */}
-        <ParallaxLayer sticky={{ start: 2.9, end: 3 }}>
-          <animated.img src={relogio} style={{ width: "400px", position: "absolute", right: "-80px", ...mirrorAnimation }} />
+        {/* Espelho */}
+        <ParallaxLayer sticky={{ start: 3.5, end: 3.5 }}>
+          <animated.img src={espelho} style={{ width: "600px", position: "absolute", left: "-140px", ...mirrorAnimation }} />
         </ParallaxLayer>
 
         {/* Velas */}
@@ -244,6 +245,9 @@ function MyComponent() {
         {/* Textos */}
         <ParallaxLayer offset={0.9} speed={0.6}><h2>Welcome to my Alice World</h2></ParallaxLayer>
         <ParallaxLayer offset={3} speed={2}><h2>Hi Mom!</h2></ParallaxLayer>
+
+        {/* Fundo da Toca */}
+        <ParallaxLayer offset={8} speed={3} factor={2} style={{ backgroundImage: `url(${fundo2})`, backgroundSize: "cover" }} />
 
       </Parallax>
     </div>
