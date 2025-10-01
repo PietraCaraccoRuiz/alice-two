@@ -1,0 +1,94 @@
+:root {
+    /* Paleta de cores */
+    --color-background: #0b3d91;
+    /* azul escuro */
+    --color-moon: #a0c4ff;
+    /* azul claro para lua */
+    --color-land: #6b705c;
+    /* verde escuro / terra */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #d4d4d4;
+    --color-accent: #ffb703;
+    /* amarelo vibrante */
+    --color-cat-border: #ffafcc;
+    /* rosa claro */
+}
+
+section {
+    position: relative;
+    width: 100vw;
+    height: 100svh;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.hero , .cards, .services{
+    background-color: var(--color-moon);
+    color: var(--color-background);
+}
+
+.about, .outro {
+    display:  flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-background);
+    color: var(--color-moon);
+}
+
+.carta {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-cards {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.hero-cards, .card {
+    flex: 1;
+    position: relative;
+    aspect-ratio: 5/7;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hero-cards .card span {
+    font-size: 0.7rem;
+}
+
+.hero-cards .card#hero-card-1 {
+    background-color: var(--color-cat-border);
+    transform-origin: top right;
+    z-index: 2;
+}
+
+.hero-cards .card#hero-card-2 {
+    background-color: var(--color-land);
+    z-index: 1;
+}
+
+.hero-cards .card#hero-card-3 {
+    background-color: var(--color-accent);
+    transform-origin: top left;
+    z-index: 0;
+}
+
+
+
+
