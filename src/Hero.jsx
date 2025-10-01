@@ -1,126 +1,166 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 
-const frameCount = 187;
-const currentFrame = (i) => `/video/frame_${String(i + 1).padStart(4, "0")}.jpg`;
+const FRAME_COUNT = 187;
+const getFrameSrc = (i) => `/video/frame_${String(i + 1).padStart(4, "0")}.jpg`;
+
+// Quantas "telas" de scroll a animação consome dentro da hero
+const SCREENS = 4;
 
 export default function Hero() {
+  const heroRef = useRef(null);
   const canvasRef = useRef(null);
-  const videoFrames = useRef({ frame: 0 });
+  const ctxRef = useRef(null);
   const imagesRef = useRef([]);
-  const rafRef = useRef(null);
+  const stateRef = useRef({ frame: 0, loaded: 0 });
+  const lenisRef = useRef(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
+  const draw = () => {
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const ctx = ctxRef.current;
+    const img = imagesRef.current[stateRef.current.frame];
+    if (!canvas || !ctx || !img) return;
 
-    // Lenis scroll
-    const lenis = new Lenis();
-    lenis.on("scroll", ScrollTrigger.update);
-    const rafFn = (time) => lenis.raf(time * 1000);
-    gsap.ticker.add(rafFn);
-    rafRef.current = rafFn;
+    const cw = canvas.clientWidth;
+    const ch = canvas.clientHeight;
 
-    // Ajusta canvas
-    const setCanvasSize = () => {
-      const pixelRatio = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * pixelRatio;
-      canvas.height = window.innerHeight * pixelRatio;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
-      context.setTransform(1, 0, 0, 1, 0, 0);
-      context.scale(pixelRatio, pixelRatio);
-    };
-    setCanvasSize();
-    window.addEventListener("resize", setCanvasSize);
+    // limpa e fundo
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, cw, ch);
 
-    // Carregar imagens
-    let imagesToLoad = frameCount;
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      img.onload = img.onerror = () => {
-        imagesToLoad--;
-        if (imagesToLoad === 0) {
-          renderFrame();
-          setupScrollTrigger();
-        }
-      };
-      imagesRef.current.push(img);
+    // cover
+    const imageAspect = img.naturalWidth / img.naturalHeight;
+    const canvasAspect = cw / ch;
+
+    let dw, dh, dx, dy;
+    if (imageAspect > canvasAspect) {
+      dh = ch;
+      dw = dh * imageAspect;
+      dx = (cw - dw) / 2;
+      dy = 0;
+    } else {
+      dw = cw;
+      dh = dw / imageAspect;
+      dx = 0;
+      dy = (ch - dh) / 2;
     }
 
-    const renderFrame = () => {
-      const canvasWidth = window.innerWidth;
-      const canvasHeight = window.innerHeight;
+    ctx.drawImage(img, dx, dy, dw, dh);
+  };
 
-      // Preenche o fundo para evitar flash branco
-      context.fillStyle = "black"; // Pode trocar para qualquer cor
-      context.fillRect(0, 0, canvasWidth, canvasHeight);
+  const resizeCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
 
-      const img = imagesRef.current[videoFrames.current.frame];
-      if (!img) return;
+    const dpr = window.devicePixelRatio || 1;
+    const cw = canvas.clientWidth;
+    const ch = canvas.clientHeight;
 
-      const imageAspect = img.naturalWidth / img.naturalHeight;
-      const canvasAspect = canvasWidth / canvasHeight;
+    canvas.width = Math.max(1, Math.floor(cw * dpr));
+    canvas.height = Math.max(1, Math.floor(ch * dpr));
 
-      let drawWidth, drawHeight, drawX, drawY;
-      if (imageAspect > canvasAspect) {
-        drawHeight = canvasHeight;
-        drawWidth = canvasHeight * imageAspect;
-        drawX = (canvasWidth - drawWidth) / 2;
-        drawY = 0;
-      } else {
-        drawWidth = canvasWidth;
-        drawHeight = canvasWidth / imageAspect;
-        drawX = 0;
-        drawY = (canvasHeight - drawHeight) / 2;
-      }
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr); // coordenadas em px CSS
+    draw();
+  };
 
-      context.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-    };
+  useLayoutEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
 
-    const setupScrollTrigger = () => {
-      ScrollTrigger.create({
-        trigger: ".hero",
+    const ctxGSAP = gsap.context(() => {
+      // Lenis
+      const lenis = new Lenis({ smoothWheel: true, smoothTouch: false });
+      lenisRef.current = lenis;
+      lenis.on("scroll", ScrollTrigger.update);
+
+      const onTick = (time) => lenis.raf(time * 1000); // gsap -> segundos; lenis -> ms
+      gsap.ticker.add(onTick);
+
+      // Canvas
+      const canvas = canvasRef.current;
+      const ctx2d = canvas.getContext("2d");
+      ctxRef.current = ctx2d;
+
+      // Ajuste inicial
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      // Preload – renderiza o primeiro frame assim que ele carrega
+      imagesRef.current = Array.from({ length: FRAME_COUNT }).map((_, i) => {
+        const im = new Image();
+        im.src = getFrameSrc(i);
+        if (i === 0) {
+          // garantir poster cedo
+          im.onload = () => {
+            stateRef.current.loaded += 1;
+            draw();
+          };
+        } else {
+          im.onload = () => (stateRef.current.loaded += 1);
+        }
+        im.onerror = () => (stateRef.current.loaded += 1);
+        return im;
+      });
+
+      // ScrollTrigger – pin APENAS a seção .hero
+      const st = ScrollTrigger.create({
+        trigger: heroRef.current,
         start: "top top",
-        end: "+=400%", // Dura 4 telas
-        pin: true,
-        scrub: 1,
+        end: () => `+=${SCREENS * window.innerHeight}`,
+        pin: true, // fixa a seção (não o canvas)
+        scrub: true,
         onUpdate: (self) => {
-          const targetFrame = Math.min(
-            frameCount - 1,
-            Math.round(self.progress * (frameCount - 1))
+          const frame = Math.min(
+            FRAME_COUNT - 1,
+            Math.round(self.progress * (FRAME_COUNT - 1))
           );
-          videoFrames.current.frame = targetFrame;
-          renderFrame();
+          if (frame !== stateRef.current.frame) {
+            stateRef.current.frame = frame;
+            draw();
+          }
         },
       });
-    };
 
-    return () => {
-      window.removeEventListener("resize", setCanvasSize);
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-      if (rafRef.current) gsap.ticker.remove(rafRef.current);
-    };
+      // cleanup
+      return () => {
+        window.removeEventListener("resize", resizeCanvas);
+        st.kill();
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+        gsap.ticker.remove(onTick);
+        lenis.destroy();
+      };
+    }, heroRef);
+
+    return () => ctxGSAP.revert();
   }, []);
 
   return (
     <section
+      ref={heroRef}
       className="hero"
       style={{
+        position: "relative",
         width: "100vw",
-        height: "100vh",
+        height: "100vh", // 1 tela visível
         overflow: "hidden",
       }}
     >
       <canvas
         ref={canvasRef}
-        style={{ display: "block", width: "100%", height: "100%" }}
-      ></canvas>
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "block",
+          width: "100%",
+          height: "100%",
+        }}
+        role="img"
+        aria-label="Animação de frames no scroll"
+      />
     </section>
   );
 }
