@@ -19,7 +19,7 @@ import velas from "./assets/velas.svg";
 import relogio from "./assets/relogio.svg";
 import cadeira from "./assets/cadeira.svg";
 import carta from "./assets/carta.svg";
-import estante from "./assets/estante.svg";
+import estante from "./assets/estante.png";
 
 export default function MyComponent({ pages = 10 }) {
   const parallaxRef = useRef(null);
@@ -197,15 +197,15 @@ export default function MyComponent({ pages = 10 }) {
 
   // Todos os textos
   const texts = [
-    { content: "Lá vamos nós...", position: { left: "100px" }, offset: 0.5, direction: "left" },
-    { content: "Um mundo desconhecido se abre.", position: { right: "100px" }, offset: 0.8, direction: "right" },
-    { content: "Alice segue em sua aventura...", position: { left: "120px" }, offset: 1.2, direction: "left" },
-    { content: "O tempo parece diferente aqui.", position: { right: "120px" }, offset: 1.7, direction: "right" },
-    { content: "Relógios param, mas o tempo corre", position: { right: "120px" }, offset: 1.7, direction: "right" },
-    { content: "A curiosidade é a chave", position: { right: "120px" }, offset: 1.7, direction: "right" },
-    { content: "Cada detalhe guarda um segredo", position: { right: "120px" }, offset: 1.7, direction: "right" },
-    { content: "Quanto mais fundo, mais mágico", position: { right: "120px" }, offset: 1.7, direction: "right" },
-    { content: "Bem-vindo ao Páís das Maravilhas", position: { right: "120px" }, offset: 1.7, direction: "right" },
+    { content: "Lá vamos nós...", position: { left: "100px" }, offset: 0.6, direction: "left" },
+    { content: "Um mundo desconhecido se abre.", position: { right: "100px" }, offset: 0.9, direction: "right" },
+    { content: "Alice segue em sua aventura...", position: { left: "100px" }, offset: 1.1, direction: "left" },
+    { content: "O tempo parece diferente aqui.", position: { right: "100px" }, offset: 1.2, direction: "right" },
+    { content: "Relógios param, mas o tempo corre", position: { left: "100px" }, offset: 2.0, direction: "left" },
+    { content: "A curiosidade é a chave", position: { right: "100px" }, offset: 3.0, direction: "right" },
+    { content: "Cada detalhe guarda um segredo", position: { left: "100px" }, offset: 3.5, direction: "left" },
+    { content: "Quanto mais fundo, mais mágico", position: { right: "100px" }, offset: 4.0, direction: "right" },
+    { content: "Bem-vindo ao Páís das Maravilhas", position: { left: "100px" }, offset: 5.0, direction: "left" },
     // adicione até 20 ou mais
   ];
 
