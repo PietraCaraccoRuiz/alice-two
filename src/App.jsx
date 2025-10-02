@@ -16,7 +16,7 @@ export default function App() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Lenis ÚNICO na app
+    // Lenis único
     const lenis = new Lenis({
       duration: 1.1,
       smoothWheel: true,
@@ -25,7 +25,7 @@ export default function App() {
     });
     lenisRef.current = lenis;
 
-    // GSAP ticker -> Lenis + ST
+    // Lenis no ticker do GSAP
     const update = (time) => {
       lenis.raf(time * 1000);
       ScrollTrigger.update();
@@ -33,28 +33,24 @@ export default function App() {
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
-    // Conectar o ScrollTrigger ao Lenis (scrollerProxy)
+    // scrollerProxy confiável (usa window.scrollY)
     ScrollTrigger.scrollerProxy(document.body, {
       scrollTop(value) {
         if (arguments.length) {
-          lenis.scrollTo(value, { immediate: true });
+          window.scrollTo(0, value);
         }
-        return lenis.scroll;
+        return window.scrollY || window.pageYOffset || 0;
       },
       getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
+        return { top: 0, left: 0, width: innerWidth, height: innerHeight };
       },
+      // Opcional: define o pinType correto
+      pinType: document.body.style.transform ? "transform" : "fixed",
     });
 
     const onScroll = () => ScrollTrigger.update();
     lenis.on("scroll", onScroll);
 
-    // Um refresh basta (não chame lenis.update, essa API não existe)
     ScrollTrigger.refresh();
 
     return () => {
@@ -66,11 +62,9 @@ export default function App() {
 
   return (
     <main className="app">
-      {/* 1) HERO pinado por ScrollTrigger */}
       <Hero />
 
-      {/* 2) PARALLAX — ocupando o fluxo do body.
-            A altura externa precisa existir (pages * 100vh). */}
+      {/* Trilho do parallax (altura externa pages*100vh) */}
       <section
         id="parallax-section"
         className="parallax-wrap"
@@ -80,7 +74,6 @@ export default function App() {
         <MyComponent pages={PARALLAX_PAGES} />
       </section>
 
-      {/* 3) CARTAS — sem Lenis próprio, só ST */}
       <Cartas />
     </main>
   );

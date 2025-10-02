@@ -4,14 +4,10 @@ import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import ceu from "./assets/ceu.png";
 import toca from "./assets/toca.png";
 import fundo2 from "./assets/fundo2.gif";
 import fundo3 from "./assets/fundo3.jpg";
 import fundo4 from "./assets/fundo4.jpg";
-import flor from "./assets/flor.png";
-import arvore from "./assets/arvore.png";
-import escada from "./assets/escada.svg";
 
 import alice from "./assets/alice3.gif";
 import gaiola from "./assets/gaiola.svg";
@@ -25,13 +21,12 @@ import carta from "./assets/carta.svg";
 export default function MyComponent({ pages = 10 }) {
   const parallaxRef = useRef(null);
 
-  // === animações suaves (como no seu código) ===
-  const ceuAnimation = useSpring({
-    from: { transform: "scale(1)", filter: "brightness(0.9)" },
-    to: { transform: "scale(1.2)", filter: "brightness(1.2)" },
-    loop: { reverse: true },
-    config: { duration: 5000, easing: easings.easeInOutSine },
-  });
+  // Garante que layers não estouram o total
+  const clampFactor = (offset, desiredFactor) => {
+    const max = Math.max(0.1, pages - offset - 0.001);
+    return Math.min(desiredFactor, max);
+  };
+  const clampStickyEnd = (desiredEnd) => Math.min(desiredEnd, pages - 0.001);
 
   const mirrorAnimation = useSpring({
     from: { y: -20 },
@@ -82,7 +77,9 @@ export default function MyComponent({ pages = 10 }) {
         size: `${Math.random() * 6 + 2}px`,
         delay: Math.random() * 2000,
         duration: Math.random() * 800 + 200,
-        color: ["white", "#aee", "#ccf", "#eef", "#ffd"][Math.floor(Math.random() * 5)],
+        color: ["white", "#aee", "#ccf", "#eef", "#ffd"][
+          Math.floor(Math.random() * 5)
+        ],
         strong: true,
       })),
     []
@@ -95,7 +92,9 @@ export default function MyComponent({ pages = 10 }) {
         size: `${Math.random() * 4 + 2}px`,
         delay: Math.random() * 2000,
         duration: Math.random() * 800 + 200,
-        color: ["white", "#aee", "#ccf", "#eef", "#ffd"][Math.floor(Math.random() * 5)],
+        color: ["white", "#aee", "#ccf", "#eef", "#ffd"][
+          Math.floor(Math.random() * 5)
+        ],
         strong: false,
       })),
     []
@@ -108,7 +107,9 @@ export default function MyComponent({ pages = 10 }) {
         size: `${Math.random() * 4 + 2}px`,
         delay: Math.random() * 2000,
         duration: Math.random() * 800 + 200,
-        color: ["white", "#aee", "#ccf", "#eef", "#ffd"][Math.floor(Math.random() * 5)],
+        color: ["white", "#aee", "#ccf", "#eef", "#ffd"][
+          Math.floor(Math.random() * 5)
+        ],
         strong: false,
       })),
     []
@@ -131,24 +132,35 @@ export default function MyComponent({ pages = 10 }) {
     const styles = useSpring({
       from: { transform: `translate(${x}vw, ${y}px) rotate(${rotate}deg)` },
       to: async (next) => {
-        // eslint-disable-next-line no-constant-condition
         while (true) {
           await next({
-            transform: `translate(${x + drift}vw, ${window.innerHeight + 50}px) rotate(${rotate + 360}deg)`,
+            transform: `translate(${x + drift}vw, ${
+              window.innerHeight + 50
+            }px) rotate(${rotate + 360}deg)`,
           });
           const nx = Math.random() * 90;
           const ny = -50 - Math.random() * 100;
           const nr = Math.random() * 360;
-          await next({ transform: `translate(${nx}vw, ${ny}px) rotate(${nr}deg)` });
-          x = nx; y = ny; rotate = nr;
+          await next({
+            transform: `translate(${nx}vw, ${ny}px) rotate(${nr}deg)`,
+          });
+          x = nx;
+          y = ny;
+          rotate = nr;
         }
       },
       config: { duration: speed, easing: easings.linear },
     });
-    return <animated.img src={carta} alt="Carta" style={{ ...styles, width: size, position: "absolute", zIndex: 5 }} />;
+    return (
+      <animated.img
+        src={carta}
+        alt="Carta"
+        style={{ ...styles, width: size, position: "absolute", zIndex: 5 }}
+      />
+    );
   };
 
-  // Ligar o ScrollTrigger ao Parallax (mesmo scroll do body/Lenis)
+  // ScrollTrigger -> Parallax (o body/Lenis controla o scroll)
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -172,151 +184,169 @@ export default function MyComponent({ pages = 10 }) {
     };
   }, [pages]);
 
-  // Desligar rolagem interna do Parallax sem usar prop `scrolling`
+  // Desliga rolagem interna do Parallax e previne overflow
   useEffect(() => {
-    const el = parallaxRef.current?.container?.current;
-    if (el) {
-      el.style.overflow = "hidden"; // quem rola é o body (Lenis)
+    const container = parallaxRef.current?.container?.current;
+    if (container) {
+      container.style.overflow = "hidden";
     }
   }, []);
 
   return (
-    <Parallax
-      ref={parallaxRef}
-      pages={pages}
-      style={{ position: "relative", width: "100%", height: "100%" }}
-    >
-      {/* Céu */}
-      <ParallaxLayer offset={0} speed={1.8} factor={1}>
-        <animated.div
+    // Viewport sticky de 100vh
+    <div className="parallax-viewport">
+      <Parallax
+        ref={parallaxRef}
+        pages={pages}
+        scrolling={false} // <— desliga scroll interno
+        horizontal={false}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          overflow: "hidden",
+        }}
+      >
+        {/* Fundo da Toca */}
+        <ParallaxLayer
+          offset={1}
+          speed={0.5}
+          factor={clampFactor(0, 10.5)}
           style={{
-            ...ceuAnimation,
-            width: "100%",
-            height: "100%",
-            backgroundImage: `url(${ceu})`,
+            backgroundImage: `url(${toca})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />
-      </ParallaxLayer>
 
-      {/* Flores */}
-      <ParallaxLayer
-        offset={0.3}
-        speed={1.5}
-        factor={0.7}
-        style={{ backgroundImage: `url(${flor})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 2 }}
-      />
+        {/* Estrelas */}
+        <ParallaxLayer offset={0.8} factor={clampFactor(1.8, 3)} speed={0.4}>
+          {starsLayer1.map((s, i) => (
+            <Sparkle key={`s1-${i}`} {...s} />
+          ))}
+        </ParallaxLayer>
+        <ParallaxLayer offset={1.5} factor={clampFactor(2.5, 3)} speed={0.4}>
+          {starsLayer2.map((s, i) => (
+            <Sparkle key={`s2-${i}`} {...s} />
+          ))}
+        </ParallaxLayer>
+        <ParallaxLayer offset={4} factor={clampFactor(3, 8)} speed={0.6}>
+          {starsLayer3.map((s, i) => (
+            <Sparkle key={`s3-${i}`} {...s} />
+          ))}
+        </ParallaxLayer>
 
-      {/* Escada */}
-      <ParallaxLayer
-        offset={0.2}
-        speed={1.7}
-        factor={0.8}
-        style={{ backgroundImage: `url(${escada})`, backgroundSize: "cover", backgroundPosition: "center", zIndex: 0, width: "80%" }}
-      />
+        {/* Cartas caindo */}
+        <ParallaxLayer offset={3.4} factor={clampFactor(3.4, 5)} speed={0.8}>
+          {fallingCards.map((card, i) => (
+            <FallingCard key={`card-${i}`} {...card} />
+          ))}
+        </ParallaxLayer>
+        {/* Cartas caindo */}
+        <ParallaxLayer offset={5.4} factor={clampFactor(3.4, 5)} speed={0.8}>
+          {fallingCards.map((card, i) => (
+            <FallingCard key={`card-${i}`} {...card} />
+          ))}
+        </ParallaxLayer>
 
-      {/* Árvore */}
-      <ParallaxLayer offset={0} speed={1.8} factor={1}>
-        <div
-          style={{
-            position: "absolute",
-            right: 0,
-            bottom: 0,
-            backgroundImage: `url(${arvore})`,
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            width: "110vh",
-            height: "100vh",
-            zIndex: 2,
-          }}
-        />
-      </ParallaxLayer>
+        {/* Alice sticky */}
+        <ParallaxLayer
+          sticky={{ start: 1.3, end: clampStickyEnd(10.5) }}
+          style={{ textAlign: "center" }}
+        >
+          <animated.img src={alice} style={{ width: 1000 }} alt="Alice" />
+        </ParallaxLayer>
 
-      {/* Fundo da Toca */}
-      <ParallaxLayer
-        offset={2.2}
-        speed={3}
-        factor={10.5}
-        style={{ backgroundImage: `url(${toca})`, backgroundSize: "cover", backgroundPosition: "center" }}
-      />
+        {/* Gaiola */}
+        <ParallaxLayer offset={1.6} factor={clampFactor(2.9, 0.5)} speed={2}>
+          <animated.img
+            src={gaiola}
+            style={{
+              width: 200,
+              position: "absolute",
+              left: 0,
+              ...mirrorAnimation,
+            }}
+            alt="Gaiola"
+          />
+        </ParallaxLayer>
 
-      {/* Estrelas */}
-      <ParallaxLayer offset={1.8} factor={3} speed={0.4}>
-        {starsLayer1.map((s, i) => <Sparkle key={`s1-${i}`} {...s} />)}
-      </ParallaxLayer>
-      <ParallaxLayer offset={2.5} factor={3} speed={0.4}>
-        {starsLayer2.map((s, i) => <Sparkle key={`s2-${i}`} {...s} />)}
-      </ParallaxLayer>
-      <ParallaxLayer offset={3} factor={8} speed={0.6}>
-        {starsLayer3.map((s, i) => <Sparkle key={`s3-${i}`} {...s} />)}
-      </ParallaxLayer>
+        {/* Relogio */}
+        <ParallaxLayer sticky={{ start: 2, end: 2 }}>
+          <animated.img
+            src={relogio}
+            style={{
+              width: 300,
+              position: "absolute",
+              right: -80,
+              ...mirrorAnimation,
+            }}
+            alt="Relógio"
+          />
+        </ParallaxLayer>
 
-      {/* Cartas caindo */}
-      <ParallaxLayer offset={3.4} factor={10} speed={0.8}>
-        {fallingCards.map((card, i) => <FallingCard key={`card-${i}`} {...card} />)}
-      </ParallaxLayer>
+        {/* Espelho */}
+        <ParallaxLayer sticky={{ start: 3.5, end: 3.5 }}>
+          <animated.img
+            src={espelho}
+            style={{
+              width: 600,
+              position: "absolute",
+              left: -140,
+              ...mirrorAnimation,
+            }}
+            alt="Espelho"
+          />
+        </ParallaxLayer>
 
-      {/* Alice e props */}
-      <ParallaxLayer sticky={{ start: 1.3, end: 10.5 }} style={{ textAlign: "center" }}>
-        <animated.img src={alice} style={{ width: 1000 }} alt="Alice" />
-      </ParallaxLayer>
+        <ParallaxLayer sticky={{ start: 4.5, end: 4.6 }}>
+          <animated.img
+            src={velas}
+            style={{
+              width: 200,
+              position: "absolute",
+              left: -20,
+              ...mirrorAnimation,
+            }}
+            alt="Velas"
+          />
+        </ParallaxLayer>
 
-      <ParallaxLayer offset={2.9} factor={0.5} speed={2}>
-        <animated.img src={gaiola} style={{ width: 200, position: "absolute", left: 0, ...mirrorAnimation }} alt="Gaiola" />
-      </ParallaxLayer>
+        <ParallaxLayer sticky={{ start: 5.2, end: 5.3 }}>
+          <animated.img
+            src={cadeira}
+            style={{
+              width: 400,
+              position: "absolute",
+              right: 0,
+              ...chairAnimation,
+            }}
+            alt="Cadeira"
+          />
+        </ParallaxLayer>
 
-      <ParallaxLayer sticky={{ start: 2.8, end: 2.9 }}>
-        <animated.img src={relogio} style={{ width: 300, position: "absolute", right: -80, ...mirrorAnimation }} alt="Relógio" />
-      </ParallaxLayer>
+        <ParallaxLayer sticky={{ start: 6.5, end: 6.6 }}>
+          <animated.img
+            src={quadro1}
+            style={{
+              width: 200,
+              position: "absolute",
+              left: 0,
+              ...mirrorAnimation,
+            }}
+            alt="Quadro"
+          />
+        </ParallaxLayer>
 
-      <ParallaxLayer sticky={{ start: 3.5, end: 3.5 }}>
-        <animated.img src={espelho} style={{ width: 600, position: "absolute", left: -140, ...mirrorAnimation }} alt="Espelho" />
-      </ParallaxLayer>
-
-      <ParallaxLayer sticky={{ start: 4.5, end: 4.6 }}>
-        <animated.img src={velas} style={{ width: 200, position: "absolute", left: -20, ...mirrorAnimation }} alt="Velas" />
-      </ParallaxLayer>
-
-      <ParallaxLayer sticky={{ start: 5.2, end: 5.3 }}>
-        <animated.img src={cadeira} style={{ width: 400, position: "absolute", right: 0, ...chairAnimation }} alt="Cadeira" />
-      </ParallaxLayer>
-
-      <ParallaxLayer sticky={{ start: 6.5, end: 6.6 }}>
-        <animated.img src={quadro1} style={{ width: 200, position: "absolute", left: 0, ...mirrorAnimation }} alt="Quadro" />
-      </ParallaxLayer>
-
-      {/* Fundos finais */}
-      <ParallaxLayer
-        offset={6}
-        speed={0.2}
-        factor={1.3}
-        style={{ backgroundImage: `url(${fundo3})`, backgroundSize: "cover", backgroundPosition: "center" }}
-      />
-      <ParallaxLayer
-        offset={7}
-        speed={0.2}
-        factor={1.3}
-        style={{ backgroundImage: `url(${fundo3})`, backgroundSize: "cover", backgroundPosition: "center" }}
-      />
-      <ParallaxLayer
-        offset={8}
-        speed={0.2}
-        factor={1}
-        style={{ backgroundImage: `url(${fundo4})`, backgroundSize: "cover", backgroundPosition: "center" }}
-      />
-
-      {/* Textos */}
-      <ParallaxLayer offset={0.9} speed={0.6}><h2>Welcome to my Alice World</h2></ParallaxLayer>
-      <ParallaxLayer offset={3} speed={2}><h2>Hi Mom!</h2></ParallaxLayer>
-
-      {/* Fundo final */}
-      <ParallaxLayer
-        offset={8}
-        speed={3}
-        factor={2}
-        style={{ backgroundImage: `url(${fundo2})`, backgroundSize: "cover", backgroundPosition: "center" }}
-      />
-    </Parallax>
+        {/* Textos */}
+        <ParallaxLayer offset={0.9} speed={0.2}>
+          <h2>Welcome to my Alice World</h2>
+        </ParallaxLayer>
+        <ParallaxLayer offset={3} speed={0.2}>
+          <h2>Hi Mom!</h2>
+        </ParallaxLayer>
+      </Parallax>
+    </div>
   );
 }

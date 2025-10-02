@@ -14,7 +14,130 @@ export default function Cartas() {
     const smoothStep = (p) => p * p * (3 - 2 * p);
 
     const ctx = gsap.context(() => {
-      // HERO
+      // =========================
+      // HERO — ENTRADA "ARC SWING" por carta (scrub + arco curvo)
+      // =========================
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      const heroEl = heroRef.current;
+
+      if (!reduceMotion && heroEl) {
+        const heroCards = [
+          heroEl.querySelector("#hero-card-1"), // esquerda
+          heroEl.querySelector("#hero-card-2"), // centro
+          heroEl.querySelector("#hero-card-3"), // direita
+        ].filter(Boolean);
+
+        // perspectiva 3D para rotação X/Y
+        gsap.set(heroEl, { perspective: 1200 });
+
+        heroCards.forEach((cardEl, i) => {
+          const inner = cardEl.querySelector(".flip-card-inner");
+
+          // Ponto de partida/curva por carta
+          const side =
+            i === 0 ? "left" :
+            i === 2 ? "right" : "center";
+
+          // offsets de arco
+          const fromX = side === "left" ? -120 : side === "right" ? 120 : 0;     // em %
+          const peakX = side === "left" ? -40 : side === "right" ? 40 : 0;       // em %
+          const fromY = side === "center" ? 90 : 60;                              // em %
+          const peakY = side === "center" ? 20 : 10;                              // em %
+          const fromRotZ = side === "left" ? -18 : side === "right" ? 18 : 12;    // graus
+          const fromRotX = side === "center" ? -25 : -15;                         // graus (levemente “deitado”)
+          const fromSkewY = side === "left" ? -6 : side === "right" ? 6 : 0;
+
+          // estado inicial
+          gsap.set(cardEl, {
+            autoAlpha: 0,
+            xPercent: fromX,
+            yPercent: fromY,
+            rotateZ: fromRotZ,
+            rotateX: fromRotX,
+            skewY: fromSkewY,
+            scale: 0.8,
+            filter: "blur(14px) saturate(0.7) brightness(0.85)",
+            transformOrigin: "50% 60%",
+            willChange: "transform, opacity, filter",
+          });
+          if (inner) {
+            gsap.set(inner, { rotationY: side === "center" ? -60 : -35, transformPerspective: 1200, willChange: "transform" });
+          }
+
+          // timeline ligada ao scroll (trilha longa para observar)
+          const tl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: cardEl,
+              start: "top 110%", // entra ainda fora da tela
+              end: "top 40%",    // termina perto do meio
+              scrub: 1.2,
+              // markers: true,
+            },
+          });
+
+          // Fase 1: aproximação em arco (passa pelo "peak")
+          tl.to(cardEl, {
+            xPercent: peakX,
+            yPercent: peakY,
+            rotateZ: fromRotZ * 0.35,
+            rotateX: fromRotX * 0.4,
+            skewY: fromSkewY * 0.3,
+            scale: 0.92,
+            filter: "blur(6px) saturate(0.9) brightness(0.95)",
+            autoAlpha: 1,
+            duration: 0.5,
+          });
+
+          // Fase 2: pouso com leve overshoot e nitidez total
+          tl.to(cardEl, {
+            xPercent: 0,
+            yPercent: 0,
+            rotateZ: side === "center" ? -2 : 2, // leve overshoot oposto
+            rotateX: 0,
+            skewY: 0,
+            scale: 1.0,
+            filter: "blur(0px) saturate(1) brightness(1)",
+            duration: 0.35,
+          });
+
+          // Fase 3: settle (volta do overshoot)
+          tl.to(cardEl, {
+            rotateZ: 0,
+            duration: 0.15,
+          });
+
+          // Flip do miolo sincronizado ao arco
+          if (inner) {
+            tl.to(
+              inner,
+              {
+                rotationY: 0,
+                duration: 0.6,
+                clearProps: "willChange",
+              },
+              0.15 // começa um pouquinho depois do início do arco
+            );
+          }
+        });
+      } else if (heroEl) {
+        // Acessibilidade: sem motion, já deixa tudo final
+        ["#hero-card-1", "#hero-card-2", "#hero-card-3"].forEach((sel) => {
+          const cardEl = heroEl.querySelector(sel);
+          const inner = cardEl?.querySelector(".flip-card-inner");
+          if (cardEl)
+            gsap.set(cardEl, {
+              autoAlpha: 1, xPercent: 0, yPercent: 0, rotateZ: 0, rotateX: 0, skewY: 0,
+              scale: 1, filter: "none", clearProps: "transform,opacity,filter",
+            });
+          if (inner) gsap.set(inner, { rotationY: 0, clearProps: "transform" });
+        });
+      }
+      // =========================
+      // FIM — ENTRADA "ARC SWING"
+      // =========================
+
+      // HERO (efeito durante o scroll — mantém)
       ScrollTrigger.create({
         trigger: heroRef.current,
         start: "top top",
@@ -77,7 +200,7 @@ export default function Cartas() {
         },
       });
 
-      // CARDS (pin + flip)
+      // CARDS (pin + flip durante o scroll)
       ScrollTrigger.create({
         trigger: cardsRef.current,
         start: "top top",

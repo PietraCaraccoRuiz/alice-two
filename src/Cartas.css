@@ -1,6 +1,6 @@
 :root {
   --color-background: #0b3d91;
-  --color-light: #f9f4eb;
+  --color-light: #000;
   --color-land: #6b705c;
   --color-text-primary: #ffffff;
   --color-text-secondary: #d4d4d4;
@@ -15,6 +15,10 @@
   --black: #111;
   --back-blue: #1457c4;
   --back-blue-dark: #0d3f90;
+}
+
+.hero{
+    background: var(--color-light);
 }
 
 h1 { font-size: 1.5rem; font-weight: 600; }

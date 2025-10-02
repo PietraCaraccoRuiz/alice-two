@@ -85,7 +85,7 @@ export default function Hero() {
         return im;
       });
 
-      // ScrollTrigger usando o scroll global (Lenis + body)
+      // ScrollTrigger usa o scroll global (Lenis + body)
       const st = ScrollTrigger.create({
         trigger: heroRef.current,
         start: "top top",
