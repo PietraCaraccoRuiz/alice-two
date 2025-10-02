@@ -4,6 +4,8 @@ import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import AnimatedText from './AnimatedText'
+
 import toca from "./assets/toca.png";
 import fundo2 from "./assets/fundo2.gif";
 import fundo3 from "./assets/fundo3.jpg";
@@ -17,7 +19,6 @@ import velas from "./assets/velas.svg";
 import relogio from "./assets/relogio.svg";
 import cadeira from "./assets/cadeira.svg";
 import carta from "./assets/carta.svg";
-import livro1 from "./assets/livro1.png";
 import estante from "./assets/estante.svg";
 
 export default function MyComponent({ pages = 10 }) {
@@ -193,6 +194,19 @@ export default function MyComponent({ pages = 10 }) {
     }
   }, []);
 
+
+  // Todos os textos
+  const texts = [
+    { content: "Lá vamos nós...", position: { left: "100px" }, offset: 0.5, direction: "left" },
+    { content: "Um mundo desconhecido se abre.", position: { right: "100px" }, offset: 0.8, direction: "right" },
+    { content: "Alice segue em sua aventura...", position: { left: "120px" }, offset: 1.2, direction: "left" },
+    { content: "O tempo parece diferente aqui.", position: { right: "120px" }, offset: 1.7, direction: "right" },
+    // adicione até 20 ou mais
+  ];
+
+
+
+
   return (
     // Viewport sticky de 100vh
     <div className="parallax-viewport">
@@ -357,12 +371,16 @@ export default function MyComponent({ pages = 10 }) {
         </ParallaxLayer>
 
         {/* Textos */}
-        <ParallaxLayer offset={0.9} speed={0.2}>
-          <h2>Welcome to my Alice World</h2>
-        </ParallaxLayer>
-        <ParallaxLayer offset={3} speed={0.2}>
-          <h2>Hi Mom!</h2>
-        </ParallaxLayer>
+        {texts.map((t, i) => (
+          <AnimatedText
+            key={i}
+            content={t.content}
+            position={t.position}
+            offset={t.offset}
+            direction={t.direction}
+          />
+        ))}
+
       </Parallax>
     </div>
   );
