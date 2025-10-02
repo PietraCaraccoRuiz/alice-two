@@ -13,12 +13,12 @@ export default function AnimatedText({ content, position, offset, direction }) {
             : direction === "left"
                 ? "translateX(-100px)"
                 : "translateX(100px)",
-        config: { tension: 120, friction: 20 },
+        config: { tension: 1000, friction: 200 },
     });
 
     return (
         <ParallaxLayer offset={offset} speed={2}>
-            <animated.h2 ref={ref} style={{ ...spring, position: "absolute", ...position }}>
+            <animated.h2 ref={ref} style={{ ...spring, position: "absolute", ...position, fontSize: 25 }}>
                 {content}
             </animated.h2>
         </ParallaxLayer>
