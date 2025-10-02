@@ -8,7 +8,7 @@ import MyComponent from "./MyComponent";
 import Cartas from "./Cartas";
 import "./index.css";
 
-const PARALLAX_PAGES = 10; // mantenha igual ao <MyComponent pages={...} />
+const PARALLAX_PAGES = 12; // mantenha igual ao <MyComponent pages={...} />
 
 export default function App() {
   const lenisRef = useRef(null);
