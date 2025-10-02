@@ -10,6 +10,7 @@ import toca from "./assets/toca.png";
 import fundo2 from "./assets/fundo2.gif";
 import fundo3 from "./assets/fundo3.jpg";
 import fundo4 from "./assets/fundo4.jpg";
+import musgo from "./assets/musgo.svg"
 
 import alice from "./assets/alice3.gif";
 import gaiola from "./assets/gaiola.svg";
@@ -272,10 +273,18 @@ export default function MyComponent({ pages = 10 }) {
 
         {/* Alice sticky */}
         <ParallaxLayer
-          sticky={{ start: 1.3, end: clampStickyEnd(10.5) }}
-          style={{ textAlign: "center" }}
+          sticky={{ start: 1.3, end: 9.3 }}
+          style={{ textAlign: "center", zIndex: 1, position: "relative" }}
         >
           <animated.img src={alice} style={{ width: 1000 }} alt="Alice" />
+        </ParallaxLayer>
+
+        {/* Alice sticky */}
+        <ParallaxLayer
+          sticky={{ start: 9.3, end: 12 }}
+          style={{ textAlign: "center", zIndex: 1, position: "relative" }}
+        >
+          <animated.img src={alice} style={{ width: 1000, transform: "rotate(180deg)" }} alt="Alice" />
         </ParallaxLayer>
 
         {/* Gaiola */}
@@ -374,6 +383,32 @@ export default function MyComponent({ pages = 10 }) {
             alt="Quadro"
           />
         </ParallaxLayer>
+
+        {/* Musgo */}
+        <ParallaxLayer
+          sticky={{ start: 9, end: 9 }}
+          style={{
+            pointerEvents: "none",
+            zIndex: 10, // fica acima da Alice
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-start",
+          }}
+        >
+          <img
+            src={musgo}
+            alt="Musgo"
+            style={{
+              width: "100%",
+              height: "850px", // altura do teto
+              position: "absolute",
+              top: 0, // gruda no topo, parece um teto suspenso
+              left: 0,
+              objectFit: "cover",
+            }}
+          />
+        </ParallaxLayer>
+
 
         {/* Textos */}
         {texts.map((t, i) => (
