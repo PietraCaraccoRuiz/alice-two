@@ -7,21 +7,34 @@ html, body, #root {
 body {
   margin: 0;
   overflow-x: hidden;
-  background: #000; /* para não piscar branco no meio */
+  background: #000; /* evitar flash branco */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-.hero {
+/* Seções base */
+section {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
+  padding: 2rem;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Hero apenas define fundo claro */
+.hero {
+  background: #f9f4eb;
+  color: #0b3d91;
+}
+
+/* Parallax container ocupa altura dada no App.jsx (pages * 100vh) */
 .parallax-wrap {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  /* Não use overflow:hidden aqui — o Parallax controla o próprio fluxo */
+  /* height set inline no App.jsx */
+  /* NÃO usar overflow:hidden aqui — o Parallax controla a própria viewport interna */
 }
 
 h2 {
