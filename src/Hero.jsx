@@ -1,12 +1,9 @@
 import React, { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "@studio-freight/lenis";
 
 const FRAME_COUNT = 187;
 const getFrameSrc = (i) => `/video/frame_${String(i + 1).padStart(4, "0")}.jpg`;
-
-// Quantas "telas" de scroll a animação consome dentro da hero
 const SCREENS = 4;
 
 export default function Hero() {
@@ -15,7 +12,6 @@ export default function Hero() {
   const ctxRef = useRef(null);
   const imagesRef = useRef([]);
   const stateRef = useRef({ frame: 0, loaded: 0 });
-  const lenisRef = useRef(null);
 
   const draw = () => {
     const canvas = canvasRef.current;
@@ -26,12 +22,10 @@ export default function Hero() {
     const cw = canvas.clientWidth;
     const ch = canvas.clientHeight;
 
-    // limpa e fundo
     ctx.clearRect(0, 0, cw, ch);
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, cw, ch);
 
-    // cover
     const imageAspect = img.naturalWidth / img.naturalHeight;
     const canvasAspect = cw / ch;
 
@@ -47,7 +41,6 @@ export default function Hero() {
       dx = 0;
       dy = (ch - dh) / 2;
     }
-
     ctx.drawImage(img, dx, dy, dw, dh);
   };
 
@@ -64,7 +57,7 @@ export default function Hero() {
     canvas.height = Math.max(1, Math.floor(ch * dpr));
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr); // coordenadas em px CSS
+    ctx.scale(dpr, dpr);
     draw();
   };
 
@@ -72,46 +65,32 @@ export default function Hero() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctxGSAP = gsap.context(() => {
-      // Lenis
-      const lenis = new Lenis({ smoothWheel: true, smoothTouch: false });
-      lenisRef.current = lenis;
-      lenis.on("scroll", ScrollTrigger.update);
-
-      const onTick = (time) => lenis.raf(time * 1000); // gsap -> segundos; lenis -> ms
-      gsap.ticker.add(onTick);
-
       // Canvas
       const canvas = canvasRef.current;
       const ctx2d = canvas.getContext("2d");
       ctxRef.current = ctx2d;
 
-      // Ajuste inicial
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas);
 
-      // Preload – renderiza o primeiro frame assim que ele carrega
+      // Preload
       imagesRef.current = Array.from({ length: FRAME_COUNT }).map((_, i) => {
         const im = new Image();
         im.src = getFrameSrc(i);
-        if (i === 0) {
-          // garantir poster cedo
-          im.onload = () => {
-            stateRef.current.loaded += 1;
-            draw();
-          };
-        } else {
-          im.onload = () => (stateRef.current.loaded += 1);
-        }
+        im.onload = () => {
+          stateRef.current.loaded += 1;
+          if (i === 0) draw();
+        };
         im.onerror = () => (stateRef.current.loaded += 1);
         return im;
       });
 
-      // ScrollTrigger – pin APENAS a seção .hero
+      // ScrollTrigger usa o scroll global (Lenis + body)
       const st = ScrollTrigger.create({
         trigger: heroRef.current,
         start: "top top",
         end: () => `+=${SCREENS * window.innerHeight}`,
-        pin: true, // fixa a seção (não o canvas)
+        pin: true,
         scrub: true,
         onUpdate: (self) => {
           const frame = Math.min(
@@ -125,13 +104,9 @@ export default function Hero() {
         },
       });
 
-      // cleanup
       return () => {
         window.removeEventListener("resize", resizeCanvas);
         st.kill();
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-        gsap.ticker.remove(onTick);
-        lenis.destroy();
       };
     }, heroRef);
 
@@ -145,7 +120,7 @@ export default function Hero() {
       style={{
         position: "relative",
         width: "100vw",
-        height: "100vh", // 1 tela visível
+        height: "100vh",
         overflow: "hidden",
       }}
     >

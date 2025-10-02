@@ -1,94 +1,193 @@
 :root {
-    /* Paleta de cores */
-    --color-background: #0b3d91;
-    /* azul escuro */
-    --color-moon: #a0c4ff;
-    /* azul claro para lua */
-    --color-land: #6b705c;
-    /* verde escuro / terra */
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #d4d4d4;
-    --color-accent: #ffb703;
-    /* amarelo vibrante */
-    --color-cat-border: #ffafcc;
-    /* rosa claro */
+  --color-background: #0b3d91;
+  --color-light: #000;
+  --color-land: #6b705c;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d4d4d4;
+  --color-accent: #ffb703;
+  --color-cat-border: #ffafcc;
+
+  /* Baralho */
+  --card-bg: #ffffff;
+  --card-border: #d8d8d8;
+  --card-shadow: rgba(0, 0, 0, 0.12);
+  --red: #d4202a;
+  --black: #111;
+  --back-blue: #1457c4;
+  --back-blue-dark: #0d3f90;
 }
 
-section {
-    position: relative;
-    width: 100vw;
-    height: 100svh;
-    padding: 2rem;
-    overflow: hidden;
+.hero{
+    background: var(--color-light);
 }
 
-.hero , .cards, .services{
-    background-color: var(--color-moon);
-    color: var(--color-background);
+h1 { font-size: 1.5rem; font-weight: 600; }
+p { font-size: 1.1rem; font-weight: 500; }
+span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
+
+/* Containers */
+.hero-cards,
+.cards-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: min(90%, 1200px);
 }
 
-.about, .outro {
-    display:  flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--color-background);
-    color: var(--color-moon);
-}
-
-.carta {
-    display: flex;
-    flex-direction: column;
-}
-
+/* HERO – cartas menores */
 .hero-cards {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 35%;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
+  gap: 0.75rem;
+  width: min(90%, 520px);
+}
+.hero-cards .card {
+  flex: 0 0 clamp(120px, 22vw, 180px);
+  aspect-ratio: 5/7;
+  position: relative;
+  perspective: 1000px;
 }
 
-.hero-cards, .card {
-    flex: 1;
-    position: relative;
-    aspect-ratio: 5/7;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+/* CARDS – seção pinada */
+.cards {
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-light);
+  z-index: 5;
+}
+.cards-container .card {
+  flex: 1;
+  aspect-ratio: 5/7;
+  position: relative;
+  perspective: 1000px;
+  opacity: 0;
 }
 
-.card-title {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+/* Floating wrapper */
+.card-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floating 2s ease-in-out infinite;
+}
+@keyframes floating {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5%); }
+  100% { transform: translateY(0); }
+}
+#card-1 .card-wrapper, #hero-card-1 .card-wrapper { animation-delay: 0s; }
+#card-2 .card-wrapper, #hero-card-2 .card-wrapper { animation-delay: 0.25s; }
+#card-3 .card-wrapper, #hero-card-3 .card-wrapper { animation-delay: 0.5s; }
+
+/* núcleo do flip */
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  backface-visibility: hidden;
+  overflow: hidden;
+  box-shadow: 0 6px 16px var(--card-shadow);
 }
 
-.hero-cards .card span {
-    font-size: 0.7rem;
+/* frente */
+.playing {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  padding: 0.9rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  justify-items: center;
+}
+.playing .corner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.playing .corner .rank,
+.playing .corner .suit {
+  font-size: clamp(14px, 2.4vw, 22px);
+  line-height: 1;
+}
+.playing .corner.tl { top: 0.6rem; left: 0.6rem; transform-origin: top left; }
+.playing .corner.br { bottom: 0.6rem; right: 0.6rem; transform: rotate(180deg); transform-origin: bottom right; }
+
+.hearts .corner .rank,
+.hearts .corner .suit,
+.diamonds .corner .rank,
+.diamonds .corner .suit { color: var(--red); }
+.spades .corner .rank,
+.clubs .corner .suit,
+.spades .corner .suit,
+.clubs .corner .rank { color: var(--black); }
+
+/* pips */
+.playing .pips { width: 80%; height: 80%; display: grid; place-items: center; }
+.playing .pip { font-size: clamp(22px, 4.2vw, 48px); line-height: 1; }
+.hearts .pip, .diamonds .pip, .hearts .big-suit, .diamonds .big-suit { color: var(--red); }
+.spades .pip, .clubs .pip, .spades .big-suit, .clubs .big-suit { color: var(--black); }
+
+/* As */
+.face-ace { display: grid; place-items: center; }
+.face-ace .pip { font-size: clamp(48px, 9vw, 110px); }
+
+/* face card simples */
+.face-card { display: grid; gap: 0.5rem; align-items: center; justify-items: center; }
+.face-card .face-label { font-size: clamp(12px, 2vw, 16px); letter-spacing: 0.18em; opacity: 0.8; }
+.face-card .big-suit { font-size: clamp(42px, 7vw, 90px); }
+
+/* grade 10 */
+.grid-10 { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 0.25rem 0.5rem; }
+.grid-10 .pip { text-align: center; }
+
+/* verso */
+.flip-card-back { transform: rotateY(180deg); background: var(--back-blue); border: 2px solid var(--back-blue-dark); }
+.card-back { position: relative; }
+.card-back .back-pattern {
+  position: absolute; inset: 0; opacity: 0.25;
+  background-image:
+    radial-gradient(circle at 10% 20%, #fff 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 70%, #fff 0 2px, transparent 3px),
+    linear-gradient(45deg, rgba(255,255,255,0.08) 25%, transparent 25% 75%, rgba(255,255,255,0.08) 0),
+    linear-gradient(-45deg, rgba(255,255,255,0.08) 25%, transparent 25% 75%, rgba(255,255,255,0.08) 0);
+  background-size: 20px 20px, 22px 22px, 22px 22px, 22px 22px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+  filter: contrast(110%);
+}
+.card-back .back-logo {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-weight: 900; letter-spacing: 0.35em; color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-.hero-cards .card#hero-card-1 {
-    background-color: var(--color-cat-border);
-    transform-origin: top right;
-    z-index: 2;
+/* services */
+.services { background: var(--color-light); color: var(--color-background); }
+.services-header { text-align: center; transform: translateY(400%); will-change: transform; }
+
+/* responsivo */
+@media (max-width: 1024px) {
+  .hero-cards { width: min(90%, 640px); gap: 1.25rem; }
+  .cards-container { width: min(95%, 1000px); gap: 1.25rem; }
 }
-
-.hero-cards .card#hero-card-2 {
-    background-color: var(--color-land);
-    z-index: 1;
+@media (max-width: 768px) {
+  .hero-cards { width: 92%; gap: 0.75rem; }
+  .hero-cards .card { flex-basis: clamp(110px, 34vw, 150px); }
+  .cards-container { width: 94%; gap: 0.75rem; }
 }
-
-.hero-cards .card#hero-card-3 {
-    background-color: var(--color-accent);
-    transform-origin: top left;
-    z-index: 0;
-}
-
-
-
-

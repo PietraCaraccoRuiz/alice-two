@@ -1,30 +1,98 @@
-html, body {
+html, body, #root {
+  height: 100%;
+}
+* {
+  box-sizing: border-box;
+}
+body {
   margin: 0;
+  overflow-x: hidden;
+  background: #000; /* evitar flash branco */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Seções base */
+section {
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  padding: 2rem; /* bom para seções normais */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hero com fundo claro */
+.hero {
+  display: flex;
+  flex-direction: column; /* empilha no mobile */
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    flex-direction: row; /* lado a lado em telas grandes */
+    text-align: left;
+  }
+
+  .hero-content {
+    max-width: 50%;
+  }
+}
+
+
+/* PARALLAX: remover padding para não “crescer” visualmente */
+#parallax-section {
   padding: 0;
-  width: 100%;
-  overflow-x: hidden;          /* <- mata o scroll horizontal */
-  overscroll-behavior-x: none; /* <- previne bounce lateral no mobile */
-  background-color: #000;
+}
+.parallax-wrap,
+.parallax-wrap > div {
+  max-width: 100vw;
+  overflow: hidden;
 }
 
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-img {
-  width: 40%;
-}
-
+/* Títulos usados no Parallax */
 h2 {
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+  font: 600 clamp(18px, 3vw, 36px)/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   text-align: center;
-  font-family: cubano, sans-serif;
-  font-weight: 400;
-  color: white;
-  font-size: 10vw;
-  text-shadow: -0.04em 0.04em 0 #000,
-    0.04em 0.04em 0 #000,
-    0.04em -0.04em 0 #000,
-    -0.04em -0.04em 0 #000;
 }
+
+/* Trilho do parallax: sem padding/flex e com overflow visível */
+#parallax-section {
+  position: relative;
+  display: block;   /* <— evita o flex-center global */
+  padding: 0;
+  width: 100vw;
+  overflow: visible;
+}
+
+/* Viewport sticky fixo (100vh) */
+.parallax-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  display: block;   /* <— garante que nada tente centralizar */
+  overflow: hidden;
+}
+
+/* Prevenção de expansão de largura/altura por filhos */
+.parallax-viewport, .parallax-viewport * {
+  max-width: 100vw;
+}
+
+/* (opcional) Se ainda existir “section { display:flex }” global,
+   mantenha, mas o parallax-section já está blindado. */
+
+
