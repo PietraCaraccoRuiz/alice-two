@@ -17,6 +17,8 @@ import velas from "./assets/velas.svg";
 import relogio from "./assets/relogio.svg";
 import cadeira from "./assets/cadeira.svg";
 import carta from "./assets/carta.svg";
+import livro1 from "./assets/livro1.png";
+import estante from "./assets/estante.svg";
 
 export default function MyComponent({ pages = 10 }) {
   const parallaxRef = useRef(null);
@@ -134,9 +136,8 @@ export default function MyComponent({ pages = 10 }) {
       to: async (next) => {
         while (true) {
           await next({
-            transform: `translate(${x + drift}vw, ${
-              window.innerHeight + 50
-            }px) rotate(${rotate + 360}deg)`,
+            transform: `translate(${x + drift}vw, ${window.innerHeight + 50
+              }px) rotate(${rotate + 360}deg)`,
           });
           const nx = Math.random() * 90;
           const ny = -50 - Math.random() * 100;
@@ -212,7 +213,7 @@ export default function MyComponent({ pages = 10 }) {
         <ParallaxLayer
           offset={1}
           speed={0.5}
-          factor={clampFactor(0, 10.5)}
+          factor={clampFactor(0, 11)}
           style={{
             backgroundImage: `url(${toca})`,
             backgroundSize: "cover",
@@ -244,7 +245,7 @@ export default function MyComponent({ pages = 10 }) {
           ))}
         </ParallaxLayer>
         {/* Cartas caindo */}
-        <ParallaxLayer offset={5.4} factor={clampFactor(3.4, 5)} speed={0.8}>
+        <ParallaxLayer offset={7.6} factor={clampFactor(3.4, 5)} speed={0.8}>
           {fallingCards.map((card, i) => (
             <FallingCard key={`card-${i}`} {...card} />
           ))}
@@ -286,8 +287,36 @@ export default function MyComponent({ pages = 10 }) {
           />
         </ParallaxLayer>
 
-        {/* Espelho */}
+        {/* Estante */}
+        <ParallaxLayer sticky={{ start: 2.6, end: 2.6 }}>
+          <animated.img
+            src={estante}
+            style={{
+              width: 500,
+              position: "absolute",
+              left: -80,
+              ...mirrorAnimation,
+            }}
+            alt="Relógio"
+          />
+        </ParallaxLayer>
+
+        {/* Velas */}
         <ParallaxLayer sticky={{ start: 3.5, end: 3.5 }}>
+          <animated.img
+            src={velas}
+            style={{
+              width: 200,
+              position: "absolute",
+              right: -20,
+              ...mirrorAnimation,
+            }}
+            alt="Velas"
+          />
+        </ParallaxLayer>
+
+        {/* Espelho */}
+        <ParallaxLayer sticky={{ start: 4, end: 4 }}>
           <animated.img
             src={espelho}
             style={{
@@ -300,20 +329,8 @@ export default function MyComponent({ pages = 10 }) {
           />
         </ParallaxLayer>
 
-        <ParallaxLayer sticky={{ start: 4.5, end: 4.6 }}>
-          <animated.img
-            src={velas}
-            style={{
-              width: 200,
-              position: "absolute",
-              left: -20,
-              ...mirrorAnimation,
-            }}
-            alt="Velas"
-          />
-        </ParallaxLayer>
-
-        <ParallaxLayer sticky={{ start: 5.2, end: 5.3 }}>
+        {/* Cadeira */}
+        <ParallaxLayer sticky={{ start: 5, end: 5 }}>
           <animated.img
             src={cadeira}
             style={{
