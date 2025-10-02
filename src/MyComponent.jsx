@@ -201,6 +201,11 @@ export default function MyComponent({ pages = 10 }) {
     { content: "Um mundo desconhecido se abre.", position: { right: "100px" }, offset: 0.8, direction: "right" },
     { content: "Alice segue em sua aventura...", position: { left: "120px" }, offset: 1.2, direction: "left" },
     { content: "O tempo parece diferente aqui.", position: { right: "120px" }, offset: 1.7, direction: "right" },
+    { content: "Relógios param, mas o tempo corre", position: { right: "120px" }, offset: 1.7, direction: "right" },
+    { content: "A curiosidade é a chave", position: { right: "120px" }, offset: 1.7, direction: "right" },
+    { content: "Cada detalhe guarda um segredo", position: { right: "120px" }, offset: 1.7, direction: "right" },
+    { content: "Quanto mais fundo, mais mágico", position: { right: "120px" }, offset: 1.7, direction: "right" },
+    { content: "Bem-vindo ao Páís das Maravilhas", position: { right: "120px" }, offset: 1.7, direction: "right" },
     // adicione até 20 ou mais
   ];
 
