@@ -25,9 +25,29 @@ section {
 
 /* Hero com fundo claro */
 .hero {
-  background: #f9f4eb;
-  color: #0b3d91;
+  display: flex;
+  flex-direction: column; /* empilha no mobile */
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 100vh;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
+
+@media (min-width: 768px) {
+  .hero {
+    flex-direction: row; /* lado a lado em telas grandes */
+    text-align: left;
+  }
+
+  .hero-content {
+    max-width: 50%;
+  }
+}
+
 
 /* PARALLAX: remover padding para não “crescer” visualmente */
 #parallax-section {
