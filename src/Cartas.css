@@ -45,6 +45,7 @@ span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
   aspect-ratio: 5/7;
   position: relative;
   perspective: 1000px;
+  pointer-events: none;
 }
 
 /* ---------- CARDS pinados ---------- */
