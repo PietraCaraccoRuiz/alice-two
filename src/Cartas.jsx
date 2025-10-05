@@ -385,7 +385,7 @@ export default function Cartas() {
       {/* SERVICES */}
       <section className="services" ref={servicesRef}>
         <div className="services-header">
-          <h1>SLla oq ue sei la o que</h1>
+          <h1>Conheçaos personagens</h1>
         </div>
       </section>
 

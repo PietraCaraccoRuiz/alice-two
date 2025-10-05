@@ -211,3 +211,311 @@ section {
 .scroll-end-btn.up:hover {
   background: #e5a100;
 }
+/* ===== ÍCONE DE SCROLL ===== */
+.scroll-indicator {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10000;                 /* acima de qualquer sticky/parallax */
+  transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.scroll-indicator.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.scroll-indicator.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(6px); /* some com leve deslocamento */
+}
+
+.scroll-indicator p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+.mouse {
+  width: 32px;
+  height: 52px;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  position: relative;
+  margin: 0 auto;
+  box-sizing: border-box;
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.08) inset;
+}
+
+.wheel {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollWheel 1.6s infinite ease-in-out;
+}
+
+/* Animação da bolinha descendo */
+@keyframes scrollWheel {
+  0%   { opacity: 0; transform: translate(-50%, 0); }
+  30%  { opacity: 1; transform: translate(-50%, 10px); }
+  60%  { opacity: 0; transform: translate(-50%, 22px); }
+  100% { opacity: 0; transform: translate(-50%, 0); }
+}
+
+/* Musgo */
+.musgo-overlay img {
+  width: 100%;
+  object-fit: cover;     /* preenche sem distorcer */
+  object-position: center;
+}
+
+
+/* ---------- PORTA ---------- */
+.door-wrap {
+  position: relative;
+  width: 100vw;
+  height: 100vh;   /* cobre a viewport durante a sticky */
+  overflow: hidden;
+}
+
+.door-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50vw;
+  will-change: transform;
+  transform: translateZ(0);
+  pointer-events: none; /* a porta é só visual */
+  overflow: hidden;
+}
+
+.door-left { left: 0; }
+.door-right { right: 0; }
+
+/* “textura” usando o mesmo fundo da cena pra ficar coeso */
+.door-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.85) saturate(0.9);
+}
+
+/* sombras nas bordas internas pra dar profundidade */
+.door-gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.door-gradient-right {
+  right: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.35));
+}
+
+.door-gradient-left {
+  left: 0;
+  background: linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0.35));
+}
+
+/* Porta */
+.door-wrap {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  perspective: 1200px;           /* profundidade 3D */
+}
+
+.door-panel {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 50vw;
+  will-change: transform;
+  transform-style: preserve-3d;   /* mantém 3D nas children */
+  backface-visibility: hidden;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.door-left  { left: 0; }
+.door-right { right: 0; }
+
+.door-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: 50% center; /* base; JS ajusta X levemente */
+  filter: brightness(1);
+  transform: translateZ(0);
+}
+
+.mushrooms-layer {
+  position: relative;
+  width: 100vw;
+  height: 100vh; /* cobre viewport enquanto sticky */
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* posição base, levemente fora da tela */
+.mushroom {
+  position: absolute;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+}
+
+/* cantos (início um pouco “para fora”) */
+.mushroom-tl { top: -8vh;  left: -8vw; }
+.mushroom-tr { top: -8vh;  right: -8vw; }
+.mushroom-bl { bottom: -8vh; left: -8vw; }
+.mushroom-br { bottom: -8vh; right: -8vw; }
+
+/* opcional: ajuste fino por densidade/tela pequena */
+@media (max-width: 780px) {
+  .mushroom { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.22)); }
+}
+
+/* ---------- CARDS (com efeito de estar dentro da parede) ---------- */
+.cards-grid {
+  width: min(1200px, 100%);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(12px, 2vw, 20px);
+  perspective: 1000px;
+  padding: 4vh 0;
+}
+
+/* Contêiner dos cards com aparência embutida */
+.p-card {
+  cursor: pointer;
+  grid-column: span 4;
+  background: linear-gradient(145deg, rgba(240, 240, 240, 0.95), rgba(210, 210, 210, 0.95));
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  padding: clamp(14px, 2.4vw, 22px);
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(-10px);
+  box-shadow:
+    inset 0 4px 8px rgba(255, 255, 255, 0.6),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.08),
+    0 4px 6px rgba(0, 0, 0, 0.12);
+  transition: all 400ms cubic-bezier(0.25, 0.8, 0.3, 1);
+}
+
+/* Efeito de "sair da parede" ao hover */
+.p-card:hover {
+  transform: translateZ(0) scale(1.04);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(235, 235, 235, 0.95));
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* Bordas luminosas ao hover (reflexo leve) */
+.p-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.p-card:hover::before {
+  opacity: 1;
+}
+
+/* Brilho diagonal suave */
+.p-card__shine {
+  pointer-events: none;
+  position: absolute;
+  inset: -50%;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), transparent 60%);
+  transform: rotate(25deg);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  mix-blend-mode: screen;
+}
+.p-card:hover .p-card__shine {
+  opacity: 0.8;
+}
+
+/* Cabeçalho */
+.p-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.p-card__kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #1457c4;
+  font-weight: 700;
+}
+.p-card__title {
+  font-size: clamp(1.1rem, 1.3rem + 0.3vw, 1.6rem);
+  line-height: 1.25;
+  color: #0d0d0d;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* Texto */
+.p-card__text {
+  color: #333;
+  line-height: 1.6;
+  margin: 10px 0 16px;
+  font-weight: 500;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Botão */
+.p-card__cta {
+  display: flex;
+  justify-content: flex-end;
+}
+.p-card__btn {
+  border: 1px solid #1457c4;
+  background: #1457c4;
+  color: #fff;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 10px;
+  transition: all 180ms ease;
+  box-shadow: 0 4px 10px rgba(20, 87, 196, 0.25);
+}
+.p-card__btn:hover {
+  background: #0d3f90;
+  transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 1100px) {
+  .p-card { grid-column: span 6; }
+}
+@media (max-width: 680px) {
+  .p-card { grid-column: span 12; }
+}
+
