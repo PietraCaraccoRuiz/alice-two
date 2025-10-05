@@ -172,3 +172,42 @@ section {
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
+
+.scroll-end-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  background: #1457c4;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.scroll-end-btn:hover {
+  transform: translateY(-3px);
+}
+
+/* Animações e cores para os dois estados */
+.scroll-end-btn.down {
+  background: #1457c4;
+}
+
+.scroll-end-btn.down:hover {
+  background: #0d3f90;
+}
+
+.scroll-end-btn.up {
+  background: #ffb703;
+  color: #000;
+}
+
+.scroll-end-btn.up:hover {
+  background: #e5a100;
+}

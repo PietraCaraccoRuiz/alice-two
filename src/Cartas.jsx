@@ -440,6 +440,7 @@ export default function Cartas() {
           </div>
         </div>
       </section>
+      
 
       <section className="outro">
         <h1>Fim</h1>
