@@ -17,15 +17,15 @@
   --back-blue-dark: #0d3f90;
 }
 
-.hero{
-    background: var(--color-light);
+/* ---------- layout base ---------- */
+.hero {
+  background: var(--color-light);
 }
 
 h1 { font-size: 1.5rem; font-weight: 600; }
-p { font-size: 1.1rem; font-weight: 500; }
+p  { font-size: 1.1rem; font-weight: 500; }
 span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
 
-/* Containers */
 .hero-cards,
 .cards-container {
   display: flex;
@@ -35,7 +35,7 @@ span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
   width: min(90%, 1200px);
 }
 
-/* HERO – cartas menores */
+/* ---------- HERO ---------- */
 .hero-cards {
   gap: 0.75rem;
   width: min(90%, 520px);
@@ -47,7 +47,7 @@ span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
   perspective: 1000px;
 }
 
-/* CARDS – seção pinada */
+/* ---------- CARDS pinados ---------- */
 .cards {
   position: relative;
   width: 100vw;
@@ -59,14 +59,16 @@ span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
   z-index: 5;
 }
 .cards-container .card {
+  cursor: pointer;
   flex: 1;
   aspect-ratio: 5/7;
   position: relative;
   perspective: 1000px;
   opacity: 0;
+  touch-action: manipulation;
 }
 
-/* Floating wrapper */
+/* ---------- floating wrapper ---------- */
 .card-wrapper {
   width: 100%;
   height: 100%;
@@ -74,32 +76,42 @@ span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
   align-items: center;
   justify-content: center;
   animation: floating 2s ease-in-out infinite;
+  will-change: transform;
 }
 @keyframes floating {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5%); }
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-5%); }
   100% { transform: translateY(0); }
 }
-#card-1 .card-wrapper, #hero-card-1 .card-wrapper { animation-delay: 0s; }
+#card-1 .card-wrapper, #hero-card-1 .card-wrapper { animation-delay: 0s;    }
 #card-2 .card-wrapper, #hero-card-2 .card-wrapper { animation-delay: 0.25s; }
-#card-3 .card-wrapper, #hero-card-3 .card-wrapper { animation-delay: 0.5s; }
+#card-3 .card-wrapper, #hero-card-3 .card-wrapper { animation-delay: 0.5s;  }
 
-/* núcleo do flip */
+/* ---------- núcleo do flip ---------- */
 .flip-card-inner {
+  position: relative;           /* garante layering correto dos dois versos */
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
   perspective: 1000px;
+  will-change: transform;
+  contain: layout paint size;   /* isolamento p/ performance */
 }
+
 .flip-card-front,
 .flip-card-back {
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border-radius: 1rem;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   overflow: hidden;
   box-shadow: 0 6px 16px var(--card-shadow);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 /* frente */
@@ -129,59 +141,79 @@ span { text-transform: uppercase; font-size: 0.75rem; font-weight: 500; }
 .playing .corner.tl { top: 0.6rem; left: 0.6rem; transform-origin: top left; }
 .playing .corner.br { bottom: 0.6rem; right: 0.6rem; transform: rotate(180deg); transform-origin: bottom right; }
 
+/* cores por naipe */
 .hearts .corner .rank,
 .hearts .corner .suit,
 .diamonds .corner .rank,
 .diamonds .corner .suit { color: var(--red); }
 .spades .corner .rank,
-.clubs .corner .suit,
 .spades .corner .suit,
-.clubs .corner .rank { color: var(--black); }
+.clubs .corner .rank,
+.clubs .corner .suit { color: var(--black); }
 
 /* pips */
-.playing .pips { width: 80%; height: 80%; display: grid; place-items: center; }
+.playing .pips {
+  width: 80%;
+  height: 80%;
+  display: grid;
+  place-items: center;
+}
 .playing .pip { font-size: clamp(22px, 4.2vw, 48px); line-height: 1; }
 .hearts .pip, .diamonds .pip, .hearts .big-suit, .diamonds .big-suit { color: var(--red); }
 .spades .pip, .clubs .pip, .spades .big-suit, .clubs .big-suit { color: var(--black); }
 
-/* As */
+/* As / face / grid10 */
 .face-ace { display: grid; place-items: center; }
 .face-ace .pip { font-size: clamp(48px, 9vw, 110px); }
 
-/* face card simples */
 .face-card { display: grid; gap: 0.5rem; align-items: center; justify-items: center; }
 .face-card .face-label { font-size: clamp(12px, 2vw, 16px); letter-spacing: 0.18em; opacity: 0.8; }
 .face-card .big-suit { font-size: clamp(42px, 7vw, 90px); }
 
-/* grade 10 */
 .grid-10 { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 0.25rem 0.5rem; }
 .grid-10 .pip { text-align: center; }
 
-/* verso */
-.flip-card-back { transform: rotateY(180deg); background: var(--back-blue); border: 2px solid var(--back-blue-dark); }
-.card-back { position: relative; }
+/* ---------- verso (dois layers: base + details) ---------- */
+.flip-card-back { transform: rotateY(180deg); }
+
+.card-back { position: absolute; inset: 0; }
+.card-back.base    { opacity: 1;  }
+.card-back.details { opacity: 0;  } /* começa oculta; GSAP faz crossfade */
+
 .card-back .back-pattern {
-  position: absolute; inset: 0; opacity: 0.25;
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
   background-image:
     radial-gradient(circle at 10% 20%, #fff 0 2px, transparent 3px),
     radial-gradient(circle at 80% 70%, #fff 0 2px, transparent 3px),
-    linear-gradient(45deg, rgba(255,255,255,0.08) 25%, transparent 25% 75%, rgba(255,255,255,0.08) 0),
-    linear-gradient(-45deg, rgba(255,255,255,0.08) 25%, transparent 25% 75%, rgba(255,255,255,0.08) 0);
+    linear-gradient(45deg, rgba(255,255,255,.08) 25%, transparent 25% 75%, rgba(255,255,255,.08) 0),
+    linear-gradient(-45deg, rgba(255,255,255,.08) 25%, transparent 25% 75%, rgba(255,255,255,.08) 0);
   background-size: 20px 20px, 22px 22px, 22px 22px, 22px 22px;
   background-position: 0 0, 0 0, 0 0, 0 0;
   filter: contrast(110%);
 }
 .card-back .back-logo {
-  position: absolute; inset: 0; display: grid; place-items: center;
-  font-weight: 900; letter-spacing: 0.35em; color: #fff;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  letter-spacing: 0.35em;
+  color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-/* services */
-.services { background: var(--color-light); color: var(--color-background); }
+/* ---------- services ---------- */
+.services { background: var(--color-light); color: white; }
 .services-header { text-align: center; transform: translateY(400%); will-change: transform; }
 
-/* responsivo */
+/* ---------- acessibilidade ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .card-wrapper { animation: none !important; }
+}
+
+/* ---------- responsivo ---------- */
 @media (max-width: 1024px) {
   .hero-cards { width: min(90%, 640px); gap: 1.25rem; }
   .cards-container { width: min(95%, 1000px); gap: 1.25rem; }
