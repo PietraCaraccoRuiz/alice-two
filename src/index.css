@@ -178,15 +178,15 @@ section {
   bottom: 2rem;
   right: 2rem;
   z-index: 999;
-  background: #1457c4;
+  background: #a7a7a723;
   color: #fff;
   border: none;
   font-size: 1rem;
   font-weight: 600;
   padding: 0.8rem 1.2rem;
-  border-radius: 8px;
+  border-radius: 100px;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0px 14px rgba(0, 0, 0, 0.11);
   transition: all 0.3s ease;
 }
 
@@ -196,20 +196,21 @@ section {
 
 /* Animações e cores para os dois estados */
 .scroll-end-btn.down {
-  background: #1457c4;
+  background: #a7a7a79f;
 }
 
 .scroll-end-btn.down:hover {
-  background: #0d3f90;
+  background: #cfcfcfde;
+  box-shadow: 0 0px 14px rgba(255, 255, 255, 0.281);
 }
 
 .scroll-end-btn.up {
-  background: #ffb703;
-  color: #000;
+  background: #ffb7006e;
+  color: #ffff;
 }
 
 .scroll-end-btn.up:hover {
-  background: #e5a100;
+  background: #faaf00c5;
 }
 /* ===== ÍCONE DE SCROLL ===== */
 .scroll-indicator {
