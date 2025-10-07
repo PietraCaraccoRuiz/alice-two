@@ -368,22 +368,6 @@ section {
   transform: translateZ(0);
 }
 
-.mushrooms-layer {
-  position: relative;
-  width: 100vw;
-  height: 100vh; /* cobre viewport enquanto sticky */
-  overflow: visible;
-  pointer-events: none;
-}
-
-/* posição base, levemente fora da tela */
-.mushroom {
-  position: absolute;
-  will-change: transform, opacity;
-  transform: translateZ(0);
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
-}
-
 /* cantos (início um pouco “para fora”) */
 .mushroom-tl { top: -8vh;  left: -8vw; }
 .mushroom-tr { top: -8vh;  right: -8vw; }

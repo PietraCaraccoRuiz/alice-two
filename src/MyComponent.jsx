@@ -212,7 +212,7 @@ export default function MyComponent({
           // Trajetória curva (arco) + leve “respiração”
           const arc = easeArc(tCore);
           const y = lerp(200, -24, tCore) - arc * 12;
-          const x = lerp(200, -16, tCore) + Math.sin(tCore * Math.PI * 2) * 6;
+          const x = lerp(300, 10, tCore) + Math.sin(tCore * Math.PI * 2) * 6;
 
           // Tilt/3D
           const rotation = lerp(-10, 6, tCore) + Math.sin(tCore * Math.PI) * 2;
@@ -254,7 +254,7 @@ export default function MyComponent({
 
           const arc = easeArc(tCore);
           const y = lerp(300, 10, tCore) - arc * 10;
-          const x = lerp(-400, -100, tCore) + Math.sin(tCore * Math.PI * 2) * 5;
+          const x = lerp(-500, -200, tCore) + Math.sin(tCore * Math.PI * 2) * 5;
 
           const rotation = lerp(8, -8, tCore) + Math.sin(tCore * Math.PI) * 2;
           const rotationY = lerp(18, 34, tCore); // “flip” mais visível no fim

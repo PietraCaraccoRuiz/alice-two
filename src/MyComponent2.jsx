@@ -3,11 +3,10 @@ import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import fundo1 from "./assets/fundo-light.svg";
+import cogumelo from "./assets/cogumelo.svg";
 import parede1 from "./assets/parede1.svg";
 import parede2 from "./assets/parede2.svg";
 import musgo from "./assets/musgo.svg";
-import cogumelo from "./assets/cogumelo.svg";
 
 // Cards de exemplo
 const cards = [
@@ -27,21 +26,6 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
   // Porta (metades)
   const doorLeftRef = useRef(null);
   const doorRightRef = useRef(null);
-
-  // COGUMELOS
-  const mushroomsRef = useRef([]);
-  const mushrooms = useMemo(
-    () => [
-      // canto, janela local (em páginas do Parallax), tamanho em vw, profundidade, rotação final
-      { id: "tl-1", corner: "tl", start: 0.6, end: 1.6, sizeVW: 10, depth: 1.0, rot: 12 },
-      { id: "tr-1", corner: "tr", start: 1.0, end: 2.2, sizeVW: 8,  depth: 0.9, rot: -10 },
-      { id: "bl-1", corner: "bl", start: 1.4, end: 2.8, sizeVW: 12, depth: 1.15, rot: 8 },
-      { id: "br-1", corner: "br", start: 2.0, end: 3.4, sizeVW: 9,  depth: 1.0, rot: -14 },
-      { id: "tl-2", corner: "tl", start: 2.4, end: 3.8, sizeVW: 7,  depth: 0.8, rot: 16 },
-      { id: "tr-2", corner: "tr", start: 3.0, end: 4.4, sizeVW: 11, depth: 1.2, rot: -12 },
-    ],
-    []
-  );
 
   // ===== Porta — tempo bem demorado =====
   const DOOR_START = 1;
@@ -68,7 +52,7 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
     if (right) gsap.set(right, { xPercent: 0, rotateY: 0, transformOrigin: "right center" });
   }, []);
 
-  // Controla Parallax + Porta + Cogumelos
+  // Controla Parallax + Porta
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -113,46 +97,6 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
           const bg = right.querySelector(".door-bg");
           if (bg) bg.style.backgroundPosition = bgPosRight;
         }
-
-        // ====== Cogumelos (grudados nas bordas) ======
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-
-        mushrooms.forEach((m, i) => {
-          const el = mushroomsRef.current[i];
-          if (!el) return;
-
-          // progresso local do cogumelo
-          const rawM = (offset - m.start) / (m.end - m.start);
-          const tM = Math.max(0, Math.min(1, rawM));
-          const eM = easeInner(easeOuter(tM));
-
-          // deslocamento curto pra dentro do quadro (≈6% do viewport), multiplicado pela profundidade
-          const dxMax = 0.06 * vw * m.depth;
-          const dyMax = 0.06 * vh * m.depth;
-
-          // direção conforme o canto
-          let x = 0, y = 0, origin = "center center";
-          if (m.corner === "tl") { x = +dxMax * eM; y = +dyMax * eM; origin = "left top"; }
-          if (m.corner === "tr") { x = -dxMax * eM; y = +dyMax * eM; origin = "right top"; }
-          if (m.corner === "bl") { x = +dxMax * eM; y = -dyMax * eM; origin = "left bottom"; }
-          if (m.corner === "br") { x = -dxMax * eM; y = -dyMax * eM; origin = "right bottom"; }
-
-          // bobbing sutil
-          const bob = Math.sin((offset + i) * 0.8) * 3 * eM;
-
-          // rotação/escala crescendo
-          const rot = m.rot * eM;
-          const sc  = gsap.utils.interpolate(0.8, 1, eM);
-
-          gsap.set(el, {
-            x, y: y + bob,
-            rotation: rot,
-            scale: sc,
-            opacity: eM,
-            transformOrigin: origin,
-          });
-        });
       },
     });
 
@@ -162,7 +106,7 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
       window.removeEventListener("resize", onResize);
       st.kill();
     };
-  }, [pages, sectionId, mushrooms]);
+  }, [pages, sectionId]);
 
   // Hover tilt leve pros cards
   const lerp = (a, b, t) => a + (b - a) * t;
@@ -188,7 +132,7 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
   );
 
   return (
-    <div className="parallax-viewport-2">
+    <div id={sectionId} className="parallax-viewport-2">
       <Parallax
         ref={parallaxRef}
         pages={pages}
@@ -199,10 +143,25 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
         <ParallaxLayer
           offset={0.8}
           speed={0.2}
-          factor={Math.max(2, pages - 1)}
+          factor={Math.max(1, pages )}
           style={{
             zIndex: 0,
-            backgroundImage: `url(${fundo1})`,
+           background: "radial-gradient(circle at 50% 35%, #E8FBFF 0%, #39B8FF 35%, #0056A6 75%, #00162E 100%)",
+
+
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+
+        {/* cogumelo */}
+        <ParallaxLayer
+          offset={2.5}
+          speed={0.2}
+          factor={Math.max(1, pages - 1)}
+          style={{
+            zIndex: 0,
+            backgroundImage: `url(${cogumelo})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -220,26 +179,6 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
             <div ref={doorRightRef} className="door-panel door-right">
               <div className="door-bg" style={{ backgroundImage: `url(${parede2})` }} />
             </div>
-          </div>
-        </ParallaxLayer>
-
-        {/* COGUMELOS (grudados nas bordas; abaixo do musgo, acima da porta/fundo) */}
-        <ParallaxLayer
-          sticky={{ start: 0, end: pages - 0.01 }}
-          style={{ zIndex: 7, pointerEvents: "none" }}
-        >
-          <div className="mushrooms-layer">
-            {mushrooms.map((m, i) => (
-              <img
-                key={m.id}
-                ref={(el) => (mushroomsRef.current[i] = el)}
-                src={cogumelo}
-                alt="Cogumelo"
-                className={`mushroom mushroom-${m.corner}`}
-                style={{ width: `${m.sizeVW}vw`, opacity: 0 }}
-                aria-hidden
-              />
-            ))}
           </div>
         </ParallaxLayer>
 
@@ -271,7 +210,7 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
 
         {/* CARDS */}
         <ParallaxLayer
-          offset={3.8}
+          offset={2.2}
           speed={0.55}
           factor={1.25}
           style={{

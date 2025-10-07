@@ -3,10 +3,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Cartas.css";
 
-import rainha from "./assets/rainha.svg";
 import coelhocarta from "./assets/coelhocarta.svg";
+import chapeleiro from "./assets/chapeleiro.svg";
 import gato from "./assets/gato.svg";
-import gatoDetails from "./assets/rainha-details.svg";
+import gatoDetails from "./assets/gato-details.svg";
+import coelhoDetails from "./assets/coelho-details.svg";
+import chapeleiroDetails from "./assets/chapeleiro-details.svg";
 
 export default function Cartas() {
   const rootRef = useRef(null);
@@ -343,7 +345,7 @@ export default function Cartas() {
                   <div className="corner br"><span className="rank">A</span><span className="suit">♥</span></div>
                 </div>
                 <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${coelhocarta})` }} />
-                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${gatoDetails})` }} />
+                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${coelhoDetails})` }} />
               </div>
             </div>
           </div>
@@ -357,7 +359,7 @@ export default function Cartas() {
                   <div className="pips face-card"><span className="face-label">QUEEN</span><span className="big-suit">♠</span></div>
                   <div className="corner br"><span className="rank">Q</span><span className="suit">♠</span></div>
                 </div>
-                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${rainha})` }} />
+                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${gato})` }} />
                 <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${gatoDetails})` }} />
               </div>
             </div>
@@ -374,8 +376,8 @@ export default function Cartas() {
                   </div>
                   <div className="corner br"><span className="rank">10</span><span className="suit">♦</span></div>
                 </div>
-                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${gato})` }} />
-                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${gatoDetails})` }} />
+                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${chapeleiro})` }} />
+                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${chapeleiroDetails})` }} />
               </div>
             </div>
           </div>
@@ -385,7 +387,7 @@ export default function Cartas() {
       {/* SERVICES */}
       <section className="services" ref={servicesRef}>
         <div className="services-header">
-          <h1>Conheçaos personagens</h1>
+          <h1>Conheça os personagens</h1>
         </div>
       </section>
 
@@ -401,7 +403,7 @@ export default function Cartas() {
                   <div className="pips face-ace"><span className="pip">♥</span></div>
                   <div className="corner br"><span className="rank">1</span><span className="suit">♥</span></div>
                 </div>
-                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${rainha})` }} />
+                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${gato})` }} />
                 <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${gatoDetails})` }} />
               </div>
             </div>
@@ -417,7 +419,7 @@ export default function Cartas() {
                   <div className="corner br"><span className="rank">Q</span><span className="suit">♠</span></div>
                 </div>
                 <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${coelhocarta})` }} />
-                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${gatoDetails})` }} />
+                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${coelhoDetails})` }} />
               </div>
             </div>
           </div>
@@ -433,8 +435,8 @@ export default function Cartas() {
                   </div>
                   <div className="corner br"><span className="rank">10</span><span className="suit">♦</span></div>
                 </div>
-                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${gato})` }} />
-                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${gatoDetails})` }} />
+                <div className="flip-card-back card-back base" style={{ backgroundImage: `url(${chapeleiro})` }} />
+                <div className="flip-card-back card-back details" style={{ backgroundImage: `url(${chapeleiroDetails})` }} />
               </div>
             </div>
           </div>
@@ -443,7 +445,6 @@ export default function Cartas() {
       
 
       <section className="outro">
-        <h1>Fim</h1>
       </section>
     </div>
   );

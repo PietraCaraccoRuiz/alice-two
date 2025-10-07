@@ -6,7 +6,7 @@ import Lenis from "@studio-freight/lenis";
 import Hero from "./Hero";
 import MyComponent from "./MyComponent";
 import MyComponent2 from "./MyComponent2";
-import musgo2 from "./assets/musgo2.svg";
+import grama from "./assets/flor.svg";
 import Cartas from "./Cartas";
 import "./index.css";
 
@@ -145,7 +145,7 @@ export default function App() {
 
       {/* Musgo cobrindo a tela, sobre o Hero */}
       <div className="musgo-overlay">
-        <img src={musgo2} alt="Musgo sobreposto" />
+        <img src={grama} alt="Musgo sobreposto" />
       </div>
 
       {/* Trilho 1 */}
@@ -163,9 +163,9 @@ export default function App() {
       <section
         id="parallax-section-2"
         className="parallax-wrap"
-        style={{ height: `${PARALLAX_PAGES * 100}vh` }}
+        style={{ height: `${5 * 100}vh` }}
       >
-        <MyComponent2 pages={10} sectionId="parallax-section-2" />
+        <MyComponent2 pages={4} sectionId="parallax-section-2" />
       </section>
     </main>
   );
