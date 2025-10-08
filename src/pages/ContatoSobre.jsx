@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./SobreContato.css";
-import icon from "../assets/icon.png";
 import alice from "../assets/alice.jfif";
 import chapeleiro from "../assets/chapeleiro.png";
 

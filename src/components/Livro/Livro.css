@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
+
+.livro-container-figma {
+    background: #98d885;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.livro-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.livro-componente {
+    box-shadow: none; /* A sombra principal agora está no container */
+}
+
+.pagina {
+    background: #fdfaf4;
+    color: #2c2a29;
+    font-family: 'Lora', serif;
+    /* --- NOVO: Sombra no meio do livro para dar profundidade --- */
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1); 
+}
+/* A biblioteca adiciona a classe .-left ou .-right dependendo do lado da página */
+.pagina.-left {
+    border-right: 0;
+}
+.pagina.-right {
+    border-left: 0;
+}
+
+.conteudo-pagina {
+    padding: 35px 45px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.texto-paragrafos {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    padding-right: 15px; 
+}
+
+.texto-paragrafos::-webkit-scrollbar { width: 8px; }
+.texto-paragrafos::-webkit-scrollbar-track { background: transparent; }
+.texto-paragrafos::-webkit-scrollbar-thumb {
+    background-color: #c5b8a5;
+    border-radius: 20px;
+    border: 3px solid #fdfaf4;
+}
+
+.texto-paragrafos p {
+    font-size: 1em;
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 0.5em;
+    text-indent: 1.5em;
+}
+
+.texto-paragrafos p.dialogo {
+    margin-left: 1.5em;
+    text-indent: 0;
+}
+
+/* --- NOVO: Estilo para linhas de poema --- */
+.texto-paragrafos p.poema-linha {
+    text-indent: 0; /* Poemas não costumam ter a primeira linha indentada */
+    margin-bottom: 0.2em; /* Diminui o espaço entre os versos */
+    margin-left: 10%; /* Recua o bloco do poema */
+    text-align: left;
+}
+
+.texto-paragrafos p:not(.dialogo):not(.poema-linha):first-of-type::first-letter {
+    font-family: 'Times New Roman', serif;
+    font-size: 4.5em;
+    font-weight: bold;
+    float: left;
+    line-height: 0.8;
+    margin-right: 8px;
+    color: #a52a2a;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.numero-pagina {
+    text-align: center;
+    font-size: 0.85em;
+    color: #8c8c8c;
+    margin-top: auto;
+    padding-top: 15px;
+    flex-shrink: 0;
+}
+
+.pagina-capa {
+    background-color: #6a3a3a;
+}
+
+.btn-nav-figma {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.btn-nav-figma:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.btn-nav-figma span {
+    font-size: 22px;
+    line-height: 1;
+    display: block;
+}
+
+.btn-prev-figma {
+    left: -22px;
+}
+
+.btn-prev-figma span {
+    transform: rotate(180deg);
+}
+
+.btn-next-figma {
+    right: -22px;
+}

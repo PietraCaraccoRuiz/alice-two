@@ -26,25 +26,12 @@
 }
 
 
-.conteudoCapitulo {
-  padding: 20px;
-  flex: 1;
+.conteudo{
+
+  display: flex;
 }
 
-.conteudoCapitulo h2 {
+.conteudo h2 {
   font-size: 2rem;
   margin-bottom: 20px;
-}
-
-.areaInterativa {
-  display: flex;
-  gap: 20px;
-}
-
-.livro {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 15px;
-  border-radius: 10px;
-  flex: 1;
-  max-width: 800px;
 }
