@@ -28,7 +28,7 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
   const doorRightRef = useRef(null);
 
   // ===== Porta — tempo bem demorado =====
-  const DOOR_START = 1;
+  const DOOR_START = 0.8;
   const DOOR_END   = 4.6;
 
   const SMOOTH_ALPHA = 0.08;
@@ -184,7 +184,7 @@ export default function MyComponent2({ pages = 5, sectionId = "parallax-section-
 
         {/* MUSGO (por cima) */}
         <ParallaxLayer
-          sticky={{ start: 0.5, end: 0.5 }}
+          sticky={{ start: 0.7, end: 0.5 }}
           style={{
             pointerEvents: "none",
             zIndex: 8,
