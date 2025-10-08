@@ -6,18 +6,18 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import AnimatedText from "./AnimatedText";
 
-import toca from "./assets/toca.png";
-import alice from "./assets/alice3.gif";
-import gaiola from "./assets/gaiola.svg";
-import espelho from "./assets/espelho.png";
-import quadro1 from "./assets/quadro1.svg";
-import livro1 from "./assets/livro1.svg";
-import livro2 from "./assets/livro2.svg";
-import velas from "./assets/velas.svg";
-import relogio from "./assets/relogio.svg";
-import cadeira from "./assets/cadeira.svg";
-import carta from "./assets/carta.svg";
-import estante from "./assets/estante.svg";
+import toca from "../assets/toca.png";
+import alice from "../assets/alice3.gif";
+import gaiola from "../assets/gaiola.svg";
+import espelho from "../assets/espelho.png";
+import quadro1 from "../assets/quadro1.svg";
+import livro1 from "../assets/livro1.svg";
+import livro2 from "../assets/livro2.svg";
+import velas from "../assets/velas.svg";
+import relogio from "../assets/relogio.svg";
+import cadeira from "../assets/cadeira.svg";
+import carta from "../assets/carta.svg";
+import estante from "../assets/estante.svg";
 
 export default function MyComponent({
   pages = 10,

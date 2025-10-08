@@ -3,12 +3,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./Cartas.css";
 
-import coelhocarta from "./assets/coelhocarta.svg";
-import chapeleiro from "./assets/chapeleiro.svg";
-import gato from "./assets/gato.svg";
-import gatoDetails from "./assets/gato-details.svg";
-import coelhoDetails from "./assets/coelho-details.svg";
-import chapeleiroDetails from "./assets/chapeleiro-details.svg";
+import coelhocarta from "../assets/coelhocarta.svg";
+import chapeleiro from "../assets/chapeleiro.svg";
+import gato from "../assets/gato.svg";
+import gatoDetails from "../assets/gato-details.svg";
+import coelhoDetails from "../assets/coelho-details.svg";
+import chapeleiroDetails from "../assets/chapeleiro-details.svg";
 
 export default function Cartas() {
   const rootRef = useRef(null);

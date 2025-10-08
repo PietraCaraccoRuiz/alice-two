@@ -1,7 +1,9 @@
 /* ================================
    BASE GLOBAL
    ================================ */
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -22,8 +24,10 @@ html, body, #root {
 
 body {
   margin: 0;
-  overflow-x: hidden;        /* evita “sangrar” horiz. */
-  background: var(--app-bg); /* elimina flash branco */
+  overflow-x: hidden;
+  /* evita “sangrar” horiz. */
+  background: var(--app-bg);
+  /* elimina flash branco */
   color: var(--text-on-dark);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
@@ -32,12 +36,15 @@ body {
 }
 
 /* títulos globais (usados no parallax e sessões genéricas) */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   margin: 0;
 }
+
 h2 {
   color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .6);
   font: 600 clamp(18px, 3vw, 36px)/1.2 var(--font-sans);
   text-align: center;
 }
@@ -48,8 +55,10 @@ h2 {
 section {
   position: relative;
   width: 100vw;
-  height: 100svh;            /* viewport seguro em mobile */
-  padding: 2rem;             /* acolchoamento padrão */
+  height: 100svh;
+  /* viewport seguro em mobile */
+  padding: 2rem;
+  /* acolchoamento padrão */
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -59,7 +68,8 @@ section {
 /* Hero (ex: <Hero/>) */
 .hero {
   display: flex;
-  flex-direction: column;    /* mobile primeiro */
+  flex-direction: column;
+  /* mobile primeiro */
   align-items: center;
   justify-content: center;
   padding: 2rem;
@@ -72,10 +82,14 @@ section {
 
 @media (min-width: 768px) {
   .hero {
-    flex-direction: row;     /* no desktop lado a lado */
+    flex-direction: row;
+    /* no desktop lado a lado */
     text-align: left;
   }
-  .hero-content { max-width: 50%; }
+
+  .hero-content {
+    max-width: 50%;
+  }
 }
 
 /* ================================
@@ -85,9 +99,11 @@ section {
 .parallax-wrap {
   position: relative;
   display: block;
-  padding: 0;                /* sem padding pra não “crescer” */
+  padding: 0;
+  /* sem padding pra não “crescer” */
   width: 100vw;
-  overflow: visible;         /* layers podem sair da viewport sticky */
+  overflow: visible;
+  /* layers podem sair da viewport sticky */
   z-index: auto;
 }
 
@@ -98,8 +114,10 @@ section {
   top: 0;
   height: 100vh;
   width: 100vw;
-  display: block;            /* impede centralização por herança */
-  overflow: hidden;          /* desliga rolagem interna */
+  display: block;
+  /* impede centralização por herança */
+  overflow: hidden;
+  /* desliga rolagem interna */
 }
 
 .parallax-viewport-2 {
@@ -107,18 +125,20 @@ section {
   top: 0;
   height: 100vh;
   width: 100vw;
-  display: block;            /* impede centralização por herança */
-  overflow: hidden;          /* desliga rolagem interna */
-  background: linear-gradient( #0074c1, #0683d6, #0a92eb, #0cb0ff, #33c9ff, #66d9ff, #99e6ff, #ccf2ff, #e6f9ff, #f2fcff, #f9feff, #fff);
+  display: block;
+  /* impede centralização por herança */
+  overflow: hidden;
+  /* desliga rolagem interna */
+  background: linear-gradient(#0074c1, #0683d6, #0a92eb, #0cb0ff, #33c9ff, #66d9ff, #99e6ff, #ccf2ff, #e6f9ff, #f2fcff, #f9feff, #fff);
 }
 
-.outro{
+.outro {
   background: linear-gradient(#000, #001229, #002c5c, #004c91, #0074c1);
 }
 
 /* Prevenção de overflow horizontal por filhos dos trilhos */
 .parallax-wrap,
-.parallax-wrap > div,
+.parallax-wrap>div,
 .parallax-viewport-1,
 .parallax-viewport-2,
 .parallax-viewport * {
@@ -158,10 +178,15 @@ section {
    AJUSTES DE RESPONSIVIDADE
    ================================ */
 @media (max-width: 1024px) {
-  section { padding: 1.5rem; }
+  section {
+    padding: 1.5rem;
+  }
 }
+
 @media (max-width: 768px) {
-  section { padding: 1rem; }
+  section {
+    padding: 1rem;
+  }
 }
 
 /* ================================
@@ -170,7 +195,7 @@ section {
 /* títulos claros sobre fundos escuros */
 .heading-on-dark {
   color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .scroll-end-btn {
@@ -212,6 +237,7 @@ section {
 .scroll-end-btn.up:hover {
   background: #faaf00c5;
 }
+
 /* ===== ÍCONE DE SCROLL ===== */
 .scroll-indicator {
   position: fixed;
@@ -221,7 +247,8 @@ section {
   text-align: center;
   color: #fff;
   cursor: pointer;
-  z-index: 10000;                 /* acima de qualquer sticky/parallax */
+  z-index: 10000;
+  /* acima de qualquer sticky/parallax */
   transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease;
   user-select: none;
   pointer-events: auto;
@@ -236,7 +263,8 @@ section {
 .scroll-indicator.hidden {
   opacity: 0;
   visibility: hidden;
-  transform: translateX(-50%) translateY(6px); /* some com leve deslocamento */
+  transform: translateX(-50%) translateY(6px);
+  /* some com leve deslocamento */
 }
 
 .scroll-indicator p {
@@ -254,7 +282,7 @@ section {
   position: relative;
   margin: 0 auto;
   box-sizing: border-box;
-  box-shadow: 0 0 0 2px rgba(255,255,255,0.08) inset;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08) inset;
 }
 
 .wheel {
@@ -271,16 +299,40 @@ section {
 
 /* Animação da bolinha descendo */
 @keyframes scrollWheel {
-  0%   { opacity: 0; transform: translate(-50%, 0); }
-  30%  { opacity: 1; transform: translate(-50%, 10px); }
-  60%  { opacity: 0; transform: translate(-50%, 22px); }
-  100% { opacity: 0; transform: translate(-50%, 0); }
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(-50%, 10px);
+  }
+
+  60% {
+    opacity: 0;
+    transform: translate(-50%, 22px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Musgo */
+.musgo-overlay {
+  pointer-events: none;
+  /* <-- ESSENCIAL */
 }
 
 /* Musgo */
 .musgo-overlay img {
   width: 100%;
-  object-fit: cover;     /* preenche sem distorcer */
+  pointer-events: none;
+  /* <-- ESSENCIAL */
+  object-fit: cover;
+  /* preenche sem distorcer */
   object-position: center;
 }
 
@@ -289,7 +341,8 @@ section {
 .door-wrap {
   position: relative;
   width: 100vw;
-  height: 100vh;   /* cobre a viewport durante a sticky */
+  height: 100vh;
+  /* cobre a viewport durante a sticky */
   overflow: hidden;
 }
 
@@ -300,12 +353,18 @@ section {
   width: 50vw;
   will-change: transform;
   transform: translateZ(0);
-  pointer-events: none; /* a porta é só visual */
+  pointer-events: none;
+  /* a porta é só visual */
   overflow: hidden;
 }
 
-.door-left { left: 0; }
-.door-right { right: 0; }
+.door-left {
+  left: 0;
+}
+
+.door-right {
+  right: 0;
+}
 
 /* “textura” usando o mesmo fundo da cena pra ficar coeso */
 .door-bg {
@@ -328,12 +387,12 @@ section {
 
 .door-gradient-right {
   right: 0;
-  background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.35));
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35));
 }
 
 .door-gradient-left {
   left: 0;
-  background: linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0.35));
+  background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35));
 }
 
 /* Porta */
@@ -342,165 +401,329 @@ section {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  perspective: 1200px;           /* profundidade 3D */
+  perspective: 1200px;
+  /* profundidade 3D */
 }
 
 .door-panel {
   position: absolute;
-  top: 0; bottom: 0;
+  top: 0;
+  bottom: 0;
   width: 50vw;
   will-change: transform;
-  transform-style: preserve-3d;   /* mantém 3D nas children */
+  transform-style: preserve-3d;
+  /* mantém 3D nas children */
   backface-visibility: hidden;
   pointer-events: none;
   overflow: hidden;
 }
 
-.door-left  { left: 0; }
-.door-right { right: 0; }
+.door-left {
+  left: 0;
+}
+
+.door-right {
+  right: 0;
+}
 
 .door-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: 50% center; /* base; JS ajusta X levemente */
+  background-position: 50% center;
+  /* base; JS ajusta X levemente */
   filter: brightness(1);
   transform: translateZ(0);
 }
 
 /* cantos (início um pouco “para fora”) */
-.mushroom-tl { top: -8vh;  left: -8vw; }
-.mushroom-tr { top: -8vh;  right: -8vw; }
-.mushroom-bl { bottom: -8vh; left: -8vw; }
-.mushroom-br { bottom: -8vh; right: -8vw; }
+.mushroom-tl {
+  top: -8vh;
+  left: -8vw;
+}
+
+.mushroom-tr {
+  top: -8vh;
+  right: -8vw;
+}
+
+.mushroom-bl {
+  bottom: -8vh;
+  left: -8vw;
+}
+
+.mushroom-br {
+  bottom: -8vh;
+  right: -8vw;
+}
 
 /* opcional: ajuste fino por densidade/tela pequena */
 @media (max-width: 780px) {
-  .mushroom { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.22)); }
+  .mushroom {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.22));
+  }
 }
 
-/* ---------- CARDS (com efeito de estar dentro da parede) ---------- */
+/* ---------- CARDS MODERNOS ---------- */
 .cards-grid {
-  width: min(1200px, 100%);
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: clamp(12px, 2vw, 20px);
-  perspective: 1000px;
-  padding: 4vh 0;
+  display: flex;
+  justify-content: center;
+  /* Centraliza os cards horizontalmente */
+  flex-wrap: wrap;
+  gap: clamp(20px, 4vw, 40px);
+  /* Espaçamento responsivo */
+  padding: 4vh 2vw;
 }
 
-/* Contêiner dos cards com aparência embutida */
+/* Contêiner dos cards com glassmorphism e hover */
 .p-card {
   cursor: pointer;
-  grid-column: span 4;
-  background: linear-gradient(145deg, rgba(240, 240, 240, 0.95), rgba(210, 210, 210, 0.95));
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 16px;
-  padding: clamp(14px, 2.4vw, 22px);
+  background: rgba(255, 255, 255, 0.07);
+  /* fundo semi-transparente */
+  backdrop-filter: blur(18px);
+  /* efeito blur glass */
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
   position: relative;
   overflow: hidden;
-  transform: translateZ(-10px);
+  min-width: 280px;
+  max-width: 320px;
+  flex: 1 1 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   box-shadow:
-    inset 0 4px 8px rgba(255, 255, 255, 0.6),
-    inset 0 -4px 8px rgba(0, 0, 0, 0.08),
-    0 4px 6px rgba(0, 0, 0, 0.12);
-  transition: all 400ms cubic-bezier(0.25, 0.8, 0.3, 1);
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.3, 1), box-shadow 0.4s ease, background 0.4s ease;
 }
 
-/* Efeito de "sair da parede" ao hover */
+/* Hover com leve elevação */
 .p-card:hover {
-  transform: translateZ(0) scale(1.04);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(235, 235, 235, 0.95));
+  transform: translateY(-8px) scale(1.03);
+  background: rgba(255, 255, 255, 0.12);
   box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.2),
-    inset 0 0 0 rgba(0, 0, 0, 0);
+    0 15px 25px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Bordas luminosas ao hover (reflexo leve) */
+/* Brilho leve */
 .p-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   opacity: 0;
   transition: opacity 0.5s ease;
 }
+
 .p-card:hover::before {
   opacity: 1;
 }
 
-/* Brilho diagonal suave */
+/* Brilho diagonal */
 .p-card__shine {
   pointer-events: none;
   position: absolute;
   inset: -50%;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), transparent 60%);
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.25), transparent 60%);
   transform: rotate(25deg);
   opacity: 0;
   transition: opacity 0.6s ease;
   mix-blend-mode: screen;
 }
+
 .p-card:hover .p-card__shine {
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 /* Cabeçalho */
 .p-card__head {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-bottom: 8px;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
+
 .p-card__kicker {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-size: 0.75rem;
-  color: #1457c4;
+  color: #67e8f9;
   font-weight: 700;
 }
+
 .p-card__title {
-  font-size: clamp(1.1rem, 1.3rem + 0.3vw, 1.6rem);
-  line-height: 1.25;
-  color: #0d0d0d;
+  font-size: clamp(1.25rem, 1.5rem + 0.3vw, 1.75rem);
+  line-height: 1.2;
+  color: #ffffff;
   margin: 0;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 /* Texto */
 .p-card__text {
-  color: #333;
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.6;
-  margin: 10px 0 16px;
+  margin-bottom: 1.5rem;
   font-weight: 500;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 /* Botão */
 .p-card__cta {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  margin-top: auto;
 }
+
 .p-card__btn {
-  border: 1px solid #1457c4;
-  background: #1457c4;
-  color: #fff;
+  border: none;
+  background: linear-gradient(135deg, #67e8f9, #84c2fc);
+  color: #0b1237;
   font-weight: 700;
-  padding: 8px 14px;
-  border-radius: 10px;
-  transition: all 180ms ease;
-  box-shadow: 0 4px 10px rgba(20, 87, 196, 0.25);
+  padding: 10px 22px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
 .p-card__btn:hover {
-  background: #0d3f90;
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
 /* Responsividade */
 @media (max-width: 1100px) {
-  .p-card { grid-column: span 6; }
-}
-@media (max-width: 680px) {
-  .p-card { grid-column: span 12; }
+  .p-card {
+    flex: 1 1 45%;
+  }
 }
 
+@media (max-width: 680px) {
+  .p-card {
+    flex: 1 1 90%;
+  }
+}
+
+/* NavBar */
+
+/* Header */
+.alice-header {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+}
+
+/* Container interno do header */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 1200px;
+  padding: 0.8rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.header-cat-icon {
+  width: 3.5rem;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.header-cat-icon:hover {
+  transform: rotate(10deg) scale(1.05);
+}
+
+/* Navbar */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Efeito de sublinhado animado */
+.navbar a::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #67e8f9, #84c2fc);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.navbar a:hover {
+  color: #84c2fc;
+}
+
+.navbar a:hover::after {
+  width: 100%;
+}
+
+/* Navbar responsiva */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .navbar ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .navbar a {
+    font-size: 0.95rem;
+  }
+}
+
+/* Footer */
+
+.footer {
+  margin-top: 5rem;
+  position: relative;
+}
+
+.footer-wave {
+  width: 100%;
+  height: 6rem;
+  display: block;
+}
+
+.footer-text {
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 1.5rem 0;
+  background-color: rgba(14, 165, 233, 0.05);
+}

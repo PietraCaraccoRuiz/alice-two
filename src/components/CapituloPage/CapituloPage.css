@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+
+.capituloPage {
+  background-size: cover;         
+  background-position: center;  
+  width: auto;                   
+  height: auto;                   
+  display: flex;
+  flex-direction: column;
+  margin: 0;                      
+  padding: 0;                     
+}
+
+.titulo {
+    width: 70%;
+    height: 80px;
+    font-family: 'Berkshire Swash', cursive;
+    background: #FFFBF6;
+    box-shadow: 0px 4px 43.6px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    text-align: center;   
+    font-size: 30px;
+    margin: 0 auto 30px auto; 
+}
+
+
+.conteudoCapitulo {
+  padding: 20px;
+  flex: 1;
+}
+
+.conteudoCapitulo h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.areaInterativa {
+  display: flex;
+  gap: 20px;
+}
+
+.livro {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  flex: 1;
+  max-width: 800px;
+}
